@@ -110,11 +110,12 @@ def debug_render(colorInfo, w, h):
                 printnn(v)
         print('')
     printnn('\n')
-    print(v)
-    printnn('\n')
     # 使用されているカラー情報を出力
     for color in usingColors:
         print("{}: rgb{}".format(color['rgbvar'], color['rgb']))
+    # 最大カラー変数名を出力
+    printnn('\n')
+    print(v)
 
 if __name__ == '__main__':
     src = get_img_path()
