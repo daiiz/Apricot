@@ -6,6 +6,7 @@
 
 import sys
 import os.path
+import json
 
 useVars = list('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
@@ -82,6 +83,22 @@ def generate_parts_map(partsMapObj, divMap):
 
     return partsMapObj
 
+# defaultColor を求める
+def get_color_info(divMapLines):
+   colors = {}
+   for line in divMapLines:
+       if ':' in line:
+           rgbvar = 'v' + line.split(':')[0].strip()
+           rgb = line.split(':')[1].strip()
+           colors[rgbvar] = rgb
+   return colors
+
+# JSON形式で出力する
+def output_json(parts_map, color_map):
+    j = {}
+    j["parts"] = parts_map
+    j["colors"] = color_map
+    print(json.dumps(j, sort_keys = False, indent = 4))
 
 # div-map-fileを一行ずつ読み込む
 def load_div_map(dm_path):
@@ -93,7 +110,10 @@ def load_div_map(dm_path):
     parts_map_obj = init_parts_map(div_num)
     # パーツマップオブジェクトを生成
     parts_map = generate_parts_map(parts_map_obj, flines)
-    print(parts_map)
+    # defaultColor を求める
+    color_map = get_color_info(flines)
+    # JSON形式で出力する
+    output_json(parts_map, color_map)
 
 if __name__ == '__main__':
     dmfile = get_dm_path()
