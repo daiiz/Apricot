@@ -107,9 +107,10 @@ def debug_render(colorInfo, w, h):
                 else:
                     tc = None
             else:
-                printnn('.')
+                printnn(v)
         print('')
-
+    printnn('\n')
+    print(v)
 
 if __name__ == '__main__':
     src = get_img_path()
