@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# version 0.0.1 (@2015/05/17 01:45)
+if [ $# == 1 ]; then
+  python make_ui_table.py original/$1.png > tmp/$1.az
+  python make_parts_map.py tmp/$1.az > tmp/$1.mi
+  python make_html.py tmp/$1.mi > www/index.html
+  chrome run www
+fi

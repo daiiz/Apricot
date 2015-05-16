@@ -1,0 +1,17 @@
+{
+  "name": "Apricot Demo",
+  "description": "Programming is Painting.",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "icons": {
+    "48":  "icon.png",
+    "16":  "icon.png",
+    "128": "icon.png"
+  },
+  "permissions": ["storage", "unlimitedStorage", "<all_urls>"]
+}
