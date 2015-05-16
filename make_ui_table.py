@@ -111,6 +111,10 @@ def debug_render(colorInfo, w, h):
         print('')
     printnn('\n')
     print(v)
+    printnn('\n')
+    # 使用されているカラー情報を出力
+    for color in usingColors:
+        print("{}: rgb{}".format(color['rgbvar'], color['rgb']))
 
 if __name__ == '__main__':
     src = get_img_path()
