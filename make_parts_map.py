@@ -98,7 +98,8 @@ def output_json(parts_map, color_map):
     j = {}
     j["parts"] = parts_map
     j["colors"] = color_map
-    print(json.dumps(j, sort_keys = False, indent = 4))
+    #print(json.dumps(j, sort_keys = False, indent = 4))
+    print(json.dumps(j))
 
 # div-map-fileを一行ずつ読み込む
 def load_div_map(dm_path):

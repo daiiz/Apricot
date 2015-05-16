@@ -112,7 +112,7 @@ def debug_render(colorInfo, w, h):
     printnn('\n')
     # 使用されているカラー情報を出力
     for color in usingColors:
-        print("{}: rgb{}".format(color['rgbvar'], color['rgb']))
+        print("{}: rgba{}".format(color['rgbvar'], color['rgb']))
     # 最大カラー変数名を出力
     printnn('\n')
     print(v)
