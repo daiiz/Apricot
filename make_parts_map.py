@@ -105,6 +105,7 @@ def output_json(parts_map, color_map):
 def load_div_map(dm_path):
     f = open(dm_path)
     flines = f.readlines()
+    f.close()
     # 最後の行を読むことで分割数が分かる
     div_num = int(flines[len(flines) - 1])
     # パーツマップオブジェクトを初期化

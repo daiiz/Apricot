@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 
 # Project Apricot
-# Copyright (c) 2015 Daiki, Takanori.
-
-# ! DEMO !
+# Copyright (c) 2015 daiz, mathharachan, risingsun_33178.
 
 import sys
 import os.path
 import json
+
+# 定数
+DIR_ORIGINAL = 'original'
+PATH_STJ_FILE = '{}/stj.txt'.format(DIR_ORIGINAL)
 
 # miファイルのパスが有効であることを確認して返す
 def get_mi_path():
@@ -19,31 +21,93 @@ def get_mi_path():
     return None
 
 # JSONを読み込む
+# uファイルを読む
 def load_json(miPath):
     f = open(miPath, 'r')
     j = json.load(f)
+    f.close()
     return j
+
+# tag情報を返す
+# イベント仕掛けは行われない
+# TODO: Tagそのものを返すように変更したほうが良い
+def makeTag(stjs, part_id, u_sty):
+    tag_info = {'name': 'div', 'style': u_sty}
+    if stjs.has_key('v' + part_id) == True:
+       stj = stjs['v' + part_id]
+       # タグ名を決定する
+       role = stj['Role']
+       if role != None:
+           # ブラウザ標準ボタン
+           if role == 'html-button':
+               tag_info['name'] = 'button'
+           # ブラウザ標準インプット
+           if role == 'html-input':
+               tag_info['name'] = 'input'
+
+    return tag_info;
+
+# stjファイルを読み取る
+def loadStjFile():
+    res = {}
+    now_reading = None
+    f = open(PATH_STJ_FILE)
+    # 一行ずつ読み取り、JSONに格納する
+    for line in f:
+       # 行頭行末の余計な空白を除去する
+       line = line.strip()
+       if len(line) > 0:
+           if line[0] == '[':
+               # part_idは一文字であることが保証されている
+               part_id = 'v' + line[1]
+               res[part_id] = {}
+               now_reading = res[part_id]
+           else:
+               # コメントを含まない部分を取得
+               param_value = line.split(';')[0]
+               # パラメータ名とその値を取得
+               param = param_value.split(':')[0].strip()
+               value = param_value.split(':')[1].strip()
+               if value[0] == '<' and value[1] == '<':
+                   fn = param_value.split('<')[2]
+                   fn = fn.split('>')[0].strip()
+                   # ファイルを読み込み、その内容を値とする
+                   value_f = open('{}/{}'.format(DIR_ORIGINAL, fn))
+                   # TODO: 改行の取り扱いについての検討
+                   value = value_f.read().replace('\n', '<br>')
+                   value_f.close()
+               # now_reading に書き込む
+               if now_reading != None:
+                   now_reading[param] = value
+    f.close()
+    return res
 
 # パーツごとのdivタグを配列に格納して返す
 def createDivTags(parts, colors):
     divs = []
+    stjs = {}
+    # マニフェストファイル(stj)の内容を読み取る
+    stjs = loadStjFile()
     for part in parts:
+        # パーツの割り当てIDを取得
         a = part['var']
         rgb = str(colors['v' + a])
-        # 補正
+        # rgbaの表現補正
         rgbx = len(rgb.split(','))
-        if(rgbx == 3):
-            rgb = rgb.replace('rgba', 'rgb')
-        b = 'top: {}px; left: {}px; width: {}px; height :{}px; background-color: {};'.format(part['top'], part['left'], part['width'], part['height'], rgb)
-        divtag = '<div class="apricot" id="v{}" style="{}"></div>'.format(a, b)
-        divs.append(divtag)
+        if(rgbx == 3): rgb = rgb.replace('rgba', 'rgb')
+        # az,uファイルから得られる基本スタイル
+        sty = 'top: {}px; left: {}px; width: {}px; height :{}px; background-color: {};'.format(part['top'], part['left'], part['width'], part['height'], rgb)
+        # stjファイルの内容を反映させる
+        tag = makeTag(stjs, a, sty)
+        element_tag = '<{} class="apricot" id="v{}" style="{}" title="{}"></{}>'.format(tag['name'], a, tag['style'], a, tag['name'])
+        divs.append(element_tag)
     return divs
 
 # HTMLの基本タグを配列にして返す
 def createBasicTags(title):
     tags = {"before": [], "after": []}
     # 基本CSSスタイル
-    sty = '.apricot{} body{}'.format('{position: absolute}', '{margin: 0 0 0 0}')
+    sty = '.apricot{} body{}'.format('{position: absolute; -webkit-user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0)}', '{margin: 0 0 0 0;}')
     tags["before"] = [
       '<!doctype html>',
       '<html>',

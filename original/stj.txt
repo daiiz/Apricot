@@ -1,0 +1,12 @@
+[5]
+Role: html-button  ;パーツの役割
+Events: click, drag
+Text: Hello, Apricot!
+
+[3]
+Role: html-input
+
+[1]
+Role: default
+BackgroundColor: #eee  ;パーツの背景色
+Text: <<message.txt>>
