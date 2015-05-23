@@ -1,5 +1,5 @@
 [6]
-Role: html-button  ;パーツの役割
+Role: html-button
 Text: Hello,Apricot!
 BackgroundColor: default
 Cursor: pointer
@@ -7,8 +7,8 @@ Width: auto
 Height: auto
 
 [5]
-Role: html-webview
-URL: www.google.com
+; Role: html-webview
+; URL: www.google.com
 
 [4]
 Role: html-input
@@ -18,12 +18,17 @@ BackgroundColor: #fff
 Left: 10
 
 [2]
-BackgroundColor: orange
+BackgroundColor: rgba(0,0,0,0)
 Text: <<message.txt>>
+Zindex: 11
 
 [1]
 Role: html-img
-LocalFile: icon2.png
+LocalFile: icon3.png
+Zindex: 11
 
 [0]
-BoxShadow: 1
+; 影付きのボックス
+Role: apricot-box
+ShadowLevel: 1
+Zindex: 10

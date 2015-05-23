@@ -66,6 +66,12 @@ def makeStyleSet(u_sty, stj):
     ############ Left ############
     a = getPropValue(stj, 'Left')
     if a != '': style_set['left'] = a + 'px'
+    ############ ShadowLevel ############
+    a = getPropValue(stj, 'ShadowLevel')
+    if a != '': style_set['box-shadow'] = a.replace(',', '**')
+    ############ Zindex ############
+    a = getPropValue(stj, 'Zindex')
+    if a != '': style_set['z-index'] = a
 
     # style属性に埋め込める形に整形する
     style_set = str(style_set).replace(', ', '; ')  #これダメrbgaの,も影響を受ける
@@ -149,6 +155,23 @@ def makeTag(stjs, part_id, u_sty):
                    "title": part_id,
                    "src": 'http://' + src
                }}, True)
+           ############ Apricot Box ############
+           elif role == 'apricot-box':
+               name = 'div'
+               #sdw = "<div class='shadow shadow_bottom' style='{}'></div><div class='shadow shadow_top' style='{}'></div>";
+               sdw = ""
+               sha = getPropValue(stj, 'ShadowLevel')
+               if sha != '':
+                   if sha == '1':
+                       sdw = "rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px"
+                   elif sha == '2':
+                       sdw = "0 2px 10px 0 rgba(0, 0, 0, 0.16)"
+               stj['ShadowLevel'] = sdw
+               tag = getTag(name, {"keyv": {
+                   "id": "v{}".format(part_id),
+                   "style": '{}'.format(makeStyleSet(u_sty, stj)),
+                   "title": part_id,
+               }}, True)
            ############ divタグ ############
            else:
                text = getPropValue(stj, 'Text')
@@ -194,19 +217,20 @@ def loadStjFile():
                # コメントを含まない部分を取得
                param_value = line.split(';')[0]
                # パラメータ名とその値を取得
-               param = param_value.split(':')[0].strip()
-               value = param_value.split(':')[1].strip()
-               if value[0] == '<' and value[1] == '<':
-                   fn = param_value.split('<')[2]
-                   fn = fn.split('>')[0].strip()
-                   # ファイルを読み込み、その内容を値とする
-                   value_f = open('{}/{}'.format(DIR_ORIGINAL, fn))
-                   # TODO: 改行の取り扱いについての検討
-                   value = value_f.read().replace('\n', '<br>')
-                   value_f.close()
-               # now_reading に書き込む
-               if now_reading != None:
-                   now_reading[param] = value
+               if len(param_value) > 0:
+                   param = param_value.split(':')[0].strip()
+                   value = param_value.split(':')[1].strip()
+                   if value[0] == '<' and value[1] == '<':
+                       fn = param_value.split('<')[2]
+                       fn = fn.split('>')[0].strip()
+                       # ファイルを読み込み、その内容を値とする
+                       value_f = open('{}/{}'.format(DIR_ORIGINAL, fn))
+                       # TODO: 改行の取り扱いについての検討
+                       value = value_f.read().replace('\n', '<br>')
+                       value_f.close()
+                   # now_reading に書き込む
+                   if now_reading != None:
+                       now_reading[param] = value
     f.close()
     return res
 
@@ -240,7 +264,8 @@ def createBasicTags(title):
       '<!doctype html>',
       '<html>',
       '<head>',
-      '<meta charset="utf-8" />'
+      '<meta charset="utf-8" />',
+      '<link rel="stylesheet" href="apricot.css">',
       '<title>{}</title>'.format(title),
       '<style>{}</style>'.format(sty),
       '</head>',
