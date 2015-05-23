@@ -13,5 +13,5 @@
     "16":  "icon.png",
     "128": "icon.png"
   },
-  "permissions": ["storage", "unlimitedStorage", "<all_urls>"]
+  "permissions": ["storage", "unlimitedStorage", "<all_urls>", "webview"]
 }

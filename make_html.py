@@ -139,6 +139,16 @@ def makeTag(stjs, part_id, u_sty):
                    "title": part_id,
                    "src": localsrc
                }}, False)
+           ############ ブラウザWebview ############
+           elif role == 'html-webview':
+               name = 'webview'
+               src = getPropValue(stj, 'URL')
+               tag = getTag(name, {"keyv": {
+                   "id": "v{}".format(part_id),
+                   "style": '{}'.format(makeStyleSet(u_sty, stj)),
+                   "title": part_id,
+                   "src": 'http://' + src
+               }}, True)
            ############ divタグ ############
            else:
                text = getPropValue(stj, 'Text')

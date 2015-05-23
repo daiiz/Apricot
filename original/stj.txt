@@ -8,6 +8,7 @@ Height: auto
 
 [5]
 Role: html-webview
+URL: www.google.com
 
 [4]
 Role: html-input
