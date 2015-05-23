@@ -10,6 +10,7 @@ import json
 
 # 定数
 DIR_ORIGINAL = 'original'
+DIR_WWW ='www'
 PATH_STJ_FILE = '{}/stj.txt'.format(DIR_ORIGINAL)
 
 # miファイルのパスが有効であることを確認して返す
@@ -36,6 +37,10 @@ def getPropValue(stj, prop):
         res = ''
     return res
 
+# uファイルとstjを統合したスタイルを生成する
+def makeStyleSet(u_sty, stj):
+    pass
+
 def getTag(name, kvs, endtag):
     # kvs: {"keyv": {"id":2, "value":2}, "inner": 2}
     tag = ''
@@ -59,7 +64,7 @@ def getTag(name, kvs, endtag):
     tag = '<{} '.format(name) + tag + '>' + inner + closetag
     return tag
 
-# tag情報を返す
+# tagを返す
 # イベント仕掛けは行われない
 def makeTag(stjs, part_id, u_sty):
     tag = ''
@@ -79,7 +84,7 @@ def makeTag(stjs, part_id, u_sty):
                    "title": part_id,
                }, "inner": text}, True)
            ############ ブラウザ標準インプット ############
-           if role == 'html-input':
+           elif role == 'html-input':
                name = 'input'
                text = getPropValue(stj, 'Text')
                ph = getPropValue(stj, 'Placeholder')
@@ -90,7 +95,7 @@ def makeTag(stjs, part_id, u_sty):
                    "placeholder": ph
                }}, False)
            ############ ブラウザ標準イメージ ############
-           if role == 'html-img':
+           elif role == 'html-img':
                name = 'img'
                localsrc = getPropValue(stj, 'LocalFile')
                # TODO: 画像fileコピー
@@ -100,6 +105,14 @@ def makeTag(stjs, part_id, u_sty):
                    "title": part_id,
                    "src": localsrc
                }}, False)
+           ############ divタグ ############
+           else:
+               text = getPropValue(stj, 'Text')
+               tag = getTag('div', {"keyv": {
+                   "id": "v{}".format(part_id),
+                   "style": '"{}"'.format(u_sty),
+                   "title": part_id,
+               }, "inner": text}, True)
        else:
            ############ divタグ ############
            text = getPropValue(stj, 'Text')
@@ -115,7 +128,7 @@ def makeTag(stjs, part_id, u_sty):
              "style": '"{}"'.format(u_sty),
              "title": part_id,
         }, "inner": ''}, True)
-        
+
     return tag;
 
 # stjファイルを読み取る
@@ -214,7 +227,7 @@ if __name__ == '__main__':
     for tag in basics['before']:
         htmldoc += tag
 
-    htmldoc += '<div id={} class="apricot">'.format(mi_path.split('.')[0])
+    htmldoc += '<div id={} class="apricot" style="display: {}">'.format(mi_path.split('.')[0], 'block')
     for tag in divs:
         htmldoc += tag
     htmldoc += '</div>'

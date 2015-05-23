@@ -1,9 +1,11 @@
 [6]; for base4
 Role: html-button  ;パーツの役割
-Events: click, drag
 Text: ボタン
 BackgroundColor: rgba(0,0,0,0)
 Width: auto
+
+[5]
+Role: html-webview
 
 [4]
 Role: html-input
@@ -17,3 +19,6 @@ Text: <<message.txt>>
 [1]
 Role: html-img
 LocalFile: icon2.png
+
+[0]
+BoxShadow: level-1
