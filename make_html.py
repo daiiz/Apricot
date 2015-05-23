@@ -28,24 +28,95 @@ def load_json(miPath):
     f.close()
     return j
 
+
+def getPropValue(stj, prop):
+    if stj.has_key(prop) == True:
+        res = stj[prop]
+    else:
+        res = ''
+    return res
+
+def getTag(name, kvs, endtag):
+    # kvs: {"keyv": {"id":2, "value":2}, "inner": 2}
+    tag = ''
+    for i, kv in enumerate(kvs['keyv']):
+        key = kvs['keyv'].keys()[i]
+        value = kvs['keyv'][key]
+        kv = '{}={}'.format(key, value)
+        tag += kv + ' '
+    tag += 'class="apricot"'
+    # innerHTMLを設定
+    inner = ''
+    if kvs.has_key('inner') == True:
+        inner = kvs['inner']
+    # 閉じタグは必要か
+    closetag = ''
+    if endtag == True:
+        closetag = '</{}>'.format(name)
+    else:
+        inner = ''
+    # タグを生成
+    tag = '<{} '.format(name) + tag + '>' + inner + closetag
+    return tag
+
 # tag情報を返す
 # イベント仕掛けは行われない
-# TODO: Tagそのものを返すように変更したほうが良い
 def makeTag(stjs, part_id, u_sty):
-    tag_info = {'name': 'div', 'style': u_sty}
+    tag = ''
+
     if stjs.has_key('v' + part_id) == True:
        stj = stjs['v' + part_id]
        # タグ名を決定する
-       role = stj['Role']
-       if role != None:
-           # ブラウザ標準ボタン
+       if stj.has_key('Role') == True:
+           role = stj['Role']
+           ############ ブラウザ標準ボタン ############
            if role == 'html-button':
-               tag_info['name'] = 'button'
-           # ブラウザ標準インプット
+               name = 'button'
+               text = getPropValue(stj, 'Text')
+               tag = getTag('button', {"keyv": {
+                   "id": "v{}".format(part_id),
+                   "style": '"{}"'.format(u_sty),
+                   "title": part_id,
+               }, "inner": text}, True)
+           ############ ブラウザ標準インプット ############
            if role == 'html-input':
-               tag_info['name'] = 'input'
-
-    return tag_info;
+               name = 'input'
+               text = getPropValue(stj, 'Text')
+               ph = getPropValue(stj, 'Placeholder')
+               tag = getTag('input', {"keyv": {
+                   "id": "v{}".format(part_id),
+                   "style": '"{}"'.format(u_sty),
+                   "title": part_id,
+                   "placeholder": ph
+               }}, False)
+           ############ ブラウザ標準イメージ ############
+           if role == 'html-img':
+               name = 'img'
+               localsrc = getPropValue(stj, 'LocalFile')
+               # TODO: 画像fileコピー
+               tag = getTag('img', {"keyv": {
+                   "id": "v{}".format(part_id),
+                   "style": '"{}"'.format(u_sty),
+                   "title": part_id,
+                   "src": localsrc
+               }}, False)
+       else:
+           ############ divタグ ############
+           text = getPropValue(stj, 'Text')
+           tag = getTag('div', {"keyv": {
+                "id": "v{}".format(part_id),
+                "style": '"{}"'.format(u_sty),
+                "title": part_id,
+           }, "inner": text}, True)
+    else:
+        ############ divタグ ############
+        tag = getTag('div', {"keyv": {
+             "id": "v{}".format(part_id),
+             "style": '"{}"'.format(u_sty),
+             "title": part_id,
+        }, "inner": ''}, True)
+        
+    return tag;
 
 # stjファイルを読み取る
 def loadStjFile():
@@ -98,8 +169,8 @@ def createDivTags(parts, colors):
         # az,uファイルから得られる基本スタイル
         sty = 'top: {}px; left: {}px; width: {}px; height :{}px; background-color: {};'.format(part['top'], part['left'], part['width'], part['height'], rgb)
         # stjファイルの内容を反映させる
-        tag = makeTag(stjs, a, sty)
-        element_tag = '<{} class="apricot" id="v{}" style="{}" title="{}"></{}>'.format(tag['name'], a, tag['style'], a, tag['name'])
+        element_tag = makeTag(stjs, a, sty)
+        #element_tag = '<{} class="apricot" id="v{}" style="{}" title="{}"></{}>'.format(tag['name'], a, tag['style'], a, tag['name'])
         divs.append(element_tag)
     return divs
 
@@ -107,7 +178,7 @@ def createDivTags(parts, colors):
 def createBasicTags(title):
     tags = {"before": [], "after": []}
     # 基本CSSスタイル
-    sty = '.apricot{} body{}'.format('{position: absolute; -webkit-user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0)}', '{margin: 0 0 0 0;}')
+    sty = '.apricot{} body{}'.format('{position: absolute; outline: none;-webkit-user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0)}', '{margin: 0 0 0 0;}')
     tags["before"] = [
       '<!doctype html>',
       '<html>',

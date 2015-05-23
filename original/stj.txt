@@ -1,12 +1,19 @@
-[5]
+[6]; for base4
 Role: html-button  ;パーツの役割
 Events: click, drag
-Text: Hello, Apricot!
+Text: ボタン
+BackgroundColor: rgba(0,0,0,0)
+Width: auto
 
-[3]
+[4]
 Role: html-input
+Placeholder: ここに入力
+BackgroundColor: #fff
 
-[1]
-Role: default
+[2]
 BackgroundColor: #eee  ;パーツの背景色
 Text: <<message.txt>>
+
+[1]
+Role: html-img
+LocalFile: icon2.png
