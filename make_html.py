@@ -52,17 +52,20 @@ def makeStyleSet(u_sty, stj):
             style_set[prop] = value.replace(',', '**')
     # stjを解析する
     ############ BackgroundColor ############
-    bgcolor = getPropValue(stj, 'BackgroundColor')
-    if bgcolor != '': style_set['background'] = bgcolor.replace(',', '**')
+    a = getPropValue(stj, 'BackgroundColor')
+    if a != '': style_set['background'] = a.replace(',', '**')
     ############ Cursor ############
-    cursor = getPropValue(stj, 'Cursor')
-    if cursor != '': style_set['cursor'] = cursor
+    a = getPropValue(stj, 'Cursor')
+    if a != '': style_set['cursor'] = a
     ############ Height ############
-    height = getPropValue(stj, 'Height')
-    if height != '': style_set['height'] = height
+    a = getPropValue(stj, 'Height')
+    if a != '': style_set['height'] = a
     ############ Height ############
-    width = getPropValue(stj, 'Width')
-    if width != '': style_set['width'] = width
+    a = getPropValue(stj, 'Width')
+    if a != '': style_set['width'] = a
+    ############ Left ############
+    a = getPropValue(stj, 'Left')
+    if a != '': style_set['left'] = a + 'px'
 
     # style属性に埋め込める形に整形する
     style_set = str(style_set).replace(', ', '; ')  #これダメrbgaの,も影響を受ける

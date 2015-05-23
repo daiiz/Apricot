@@ -1,6 +1,6 @@
-[6]; for base4
+[6]
 Role: html-button  ;パーツの役割
-Text: Hello, Apricot!
+Text: Hello,Apricot!
 BackgroundColor: default
 Cursor: pointer
 Width: auto
@@ -11,8 +11,10 @@ Role: html-webview
 
 [4]
 Role: html-input
+Height: auto
 Placeholder: ここに入力
 BackgroundColor: #fff
+Left: 10
 
 [2]
 BackgroundColor: orange
