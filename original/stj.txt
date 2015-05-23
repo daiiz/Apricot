@@ -1,8 +1,10 @@
 [6]; for base4
 Role: html-button  ;パーツの役割
-Text: ボタン
-BackgroundColor: rgba(0,0,0,0)
+Text: Hello, Apricot!
+BackgroundColor: default
+Cursor: pointer
 Width: auto
+Height: auto
 
 [5]
 Role: html-webview
@@ -13,7 +15,7 @@ Placeholder: ここに入力
 BackgroundColor: #fff
 
 [2]
-BackgroundColor: #eee  ;パーツの背景色
+BackgroundColor: orange
 Text: <<message.txt>>
 
 [1]
@@ -21,4 +23,4 @@ Role: html-img
 LocalFile: icon2.png
 
 [0]
-BoxShadow: level-1
+BoxShadow: 1

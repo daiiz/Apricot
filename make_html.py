@@ -38,8 +38,39 @@ def getPropValue(stj, prop):
     return res
 
 # uファイルとstjを統合したスタイルを生成する
+# stjファイルの内容を優先する
 def makeStyleSet(u_sty, stj):
-    pass
+    style_set = {}
+    u_sty += ';'
+    u_sty_arr = u_sty.split(';')
+    # 一行ずつ記録する
+    # 対象となるのは background, top, left, width, height のみ
+    for usty in u_sty_arr:
+        if len(usty) > 0:
+            prop = usty.split(':')[0].strip()
+            value = usty.split(':')[1].strip()
+            style_set[prop] = value.replace(',', '**')
+    # stjを解析する
+    ############ BackgroundColor ############
+    bgcolor = getPropValue(stj, 'BackgroundColor')
+    if bgcolor != '': style_set['background'] = bgcolor.replace(',', '**')
+    ############ Cursor ############
+    cursor = getPropValue(stj, 'Cursor')
+    if cursor != '': style_set['cursor'] = cursor
+    ############ Height ############
+    height = getPropValue(stj, 'Height')
+    if height != '': style_set['height'] = height
+    ############ Height ############
+    width = getPropValue(stj, 'Width')
+    if width != '': style_set['width'] = width
+
+    # style属性に埋め込める形に整形する
+    style_set = str(style_set).replace(', ', '; ')  #これダメrbgaの,も影響を受ける
+    style_set = style_set.replace("'", '').replace('"', '')
+    style_set = style_set.replace("{", '"').replace('}', '"')
+    style_set = style_set.replace("**", ',')
+
+    return style_set
 
 def getTag(name, kvs, endtag):
     # kvs: {"keyv": {"id":2, "value":2}, "inner": 2}
@@ -80,7 +111,7 @@ def makeTag(stjs, part_id, u_sty):
                text = getPropValue(stj, 'Text')
                tag = getTag('button', {"keyv": {
                    "id": "v{}".format(part_id),
-                   "style": '"{}"'.format(u_sty),
+                   "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
                }, "inner": text}, True)
            ############ ブラウザ標準インプット ############
@@ -90,7 +121,7 @@ def makeTag(stjs, part_id, u_sty):
                ph = getPropValue(stj, 'Placeholder')
                tag = getTag('input', {"keyv": {
                    "id": "v{}".format(part_id),
-                   "style": '"{}"'.format(u_sty),
+                   "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
                    "placeholder": ph
                }}, False)
@@ -101,7 +132,7 @@ def makeTag(stjs, part_id, u_sty):
                # TODO: 画像fileコピー
                tag = getTag('img', {"keyv": {
                    "id": "v{}".format(part_id),
-                   "style": '"{}"'.format(u_sty),
+                   "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
                    "src": localsrc
                }}, False)
@@ -110,7 +141,7 @@ def makeTag(stjs, part_id, u_sty):
                text = getPropValue(stj, 'Text')
                tag = getTag('div', {"keyv": {
                    "id": "v{}".format(part_id),
-                   "style": '"{}"'.format(u_sty),
+                   "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
                }, "inner": text}, True)
        else:
@@ -118,7 +149,7 @@ def makeTag(stjs, part_id, u_sty):
            text = getPropValue(stj, 'Text')
            tag = getTag('div', {"keyv": {
                 "id": "v{}".format(part_id),
-                "style": '"{}"'.format(u_sty),
+                "style": '{}'.format(makeStyleSet(u_sty, stj)),#'"{}"'.format(u_sty),
                 "title": part_id,
            }, "inner": text}, True)
     else:
@@ -180,7 +211,7 @@ def createDivTags(parts, colors):
         rgbx = len(rgb.split(','))
         if(rgbx == 3): rgb = rgb.replace('rgba', 'rgb')
         # az,uファイルから得られる基本スタイル
-        sty = 'top: {}px; left: {}px; width: {}px; height :{}px; background-color: {};'.format(part['top'], part['left'], part['width'], part['height'], rgb)
+        sty = 'top: {}px; left: {}px; width: {}px; height :{}px; background: {};'.format(part['top'], part['left'], part['width'], part['height'], rgb)
         # stjファイルの内容を反映させる
         element_tag = makeTag(stjs, a, sty)
         #element_tag = '<{} class="apricot" id="v{}" style="{}" title="{}"></{}>'.format(tag['name'], a, tag['style'], a, tag['name'])
