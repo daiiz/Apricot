@@ -48,4 +48,6 @@ Zindex: 10
 BackgroundColor: #3F51B5
 
 [7]
+Role: html-img
+LocalFile: gudebook.jpg
 BackgroundColor: #FFC107
