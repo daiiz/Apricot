@@ -11,7 +11,11 @@ import json
 # 定数
 DIR_ORIGINAL = 'original'
 DIR_WWW ='www'
-PATH_STJ_FILE = '{}/stj.txt'.format(DIR_ORIGINAL)
+PATH_STJ_FILE = '{}/{}.stj'
+
+# stjファイルのパスを返す
+def getPathStj(partname):
+    return PATH_STJ_FILE.format(DIR_ORIGINAL, partname)
 
 # miファイルのパスが有効であることを確認して返す
 def get_mi_path():
@@ -200,7 +204,7 @@ def makeTag(stjs, part_id, u_sty):
                    "id": "{}_{}".format(part_name, part_id),
                    "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
-                   "src": 'http://' + src
+                   "src": src
                }}, True)
            ############ divタグ ############
            else:
@@ -215,7 +219,7 @@ def makeTag(stjs, part_id, u_sty):
            text = getPropValue(stj, 'Text')
            tag = getTag('div', {"keyv": {
                 "id": "{}_{}".format(part_name, part_id),
-                "style": '{}'.format(makeStyleSet(u_sty, stj)),#'"{}"'.format(u_sty),
+                "style": '{}'.format(makeStyleSet(u_sty, stj)),
                 "title": part_id,
            }, "inner": text}, True)
     ############ divタグ ############
@@ -229,10 +233,11 @@ def makeTag(stjs, part_id, u_sty):
     return tag;
 
 # stjファイルを読み取る
-def loadStjFile():
+def loadStjFile(partname):
     res = {}
     now_reading = None
-    f = open(PATH_STJ_FILE)
+    stj_file_path = getPathStj(partname)
+    f = open(stj_file_path)
     # 一行ずつ読み取り、JSONに格納する
     for line in f:
        # 行頭行末の余計な空白を除去する
@@ -249,7 +254,7 @@ def loadStjFile():
                # パラメータ名とその値を取得
                if len(param_value) > 0:
                    param = param_value.split(':')[0].strip()
-                   value = param_value.split(':')[1].strip()
+                   value = (param_value[param_value.find(':') + 1:]).strip()
                    if value[0] == '<' and value[1] == '<':
                        fn = param_value.split('<')[2]
                        fn = fn.split('>')[0].strip()
@@ -269,7 +274,7 @@ def createDivTags(parts, colors):
     divs = []
     stjs = {}
     # マニフェストファイル(stj)の内容を読み取る
-    stjs = loadStjFile()
+    stjs = loadStjFile(part_name)
     for part in parts:
         # パーツの割り当てIDを取得
         a = part['var']
@@ -323,7 +328,6 @@ if __name__ == '__main__':
     # div配列を生成
     divs = createDivTags(parts, colors)
     # 基本タグ配列を生成
-    # パーツ名を取得する
     basics = createBasicTags(part_name)
 
     # HTMLを出力
