@@ -1,26 +1,35 @@
 [6]
 Role: html-button
-Text: Hello,Apricot!
+Text: Hello:Apricot!
 BackgroundColor: default
 Cursor: pointer
 Width: auto
 Height: auto
 
 [5]
-; Role: html-webview
-; URL: www.google.com
+;Role: html-webview
+;URL: www.google.com
+ShadowLevel: 1
 
 [4]
 Role: html-input
 Height: auto
 Placeholder: ここに入力
 BackgroundColor: #fff
-Left: 10
+Left: 10px
+Display: block
 
 [2]
 BackgroundColor: rgba(0,0,0,0)
 Text: <<message.txt>>
 Zindex: 11
+Width: 200px
+Top: +8px
+; フォントの設定
+FontSize: large
+FontColor: #fff
+FontWeight: 200
+FontFamily: Roboto
 
 [1]
 Role: html-img
@@ -29,6 +38,9 @@ Zindex: 11
 
 [0]
 ; 影付きのボックス
-Role: apricot-box
-ShadowLevel: 1
+ShadowLevel: 3
 Zindex: 10
+BackgroundColor: #3F51B5
+
+[7]
+BackgroundColor: #FFC107

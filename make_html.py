@@ -37,6 +37,17 @@ def getPropValue(stj, prop):
         res = ''
     return res
 
+# px値を返す
+def getPxValue(base, diff):
+    # base、diffから'px'を除去する
+    base = str(base).replace('px', '').strip()
+    diff = str(diff).replace('px', '').strip()
+    # diff[0]が符号であれば、baseにdiff加算した値を採用する
+    # diffが符号なしの場合は、diffの値を採用する
+    if diff[0] == '+' or diff[0] == '-':
+        diff = int(base) + int(diff)
+    return str(diff) + 'px'
+
 # uファイルとstjを統合したスタイルを生成する
 # stjファイルの内容を優先する
 def makeStyleSet(u_sty, stj):
@@ -59,19 +70,53 @@ def makeStyleSet(u_sty, stj):
     if a != '': style_set['cursor'] = a
     ############ Height ############
     a = getPropValue(stj, 'Height')
-    if a != '': style_set['height'] = a
-    ############ Height ############
+    if a != '': style_set['height'] = getPxValue(style_set['height'], a)
+    ############ Width ############
     a = getPropValue(stj, 'Width')
-    if a != '': style_set['width'] = a
+    if a != '': style_set['width'] = getPxValue(style_set['width'], a)
     ############ Left ############
     a = getPropValue(stj, 'Left')
-    if a != '': style_set['left'] = a + 'px'
-    ############ ShadowLevel ############
-    a = getPropValue(stj, 'ShadowLevel')
-    if a != '': style_set['box-shadow'] = a.replace(',', '**')
+    if a != '': style_set['left'] = getPxValue(style_set['left'], a)
+    ############ Top ############
+    a = getPropValue(stj, 'Top')
+    if a != '': style_set['top'] = getPxValue(style_set['top'], a)
     ############ Zindex ############
     a = getPropValue(stj, 'Zindex')
     if a != '': style_set['z-index'] = a
+    ############ Display ############
+    a = getPropValue(stj, 'Display')
+    if a != '': style_set['display'] = a
+    ############ ShadowLevel ############
+    a = getPropValue(stj, 'ShadowLevel')
+    if a != '':
+        if a == '1':
+            a = "rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px"
+        elif a == '2':
+            a = "0 2px 10px 0 rgba(0, 0, 0, 0.16)"
+        elif a == '3':
+            a = "0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+        elif a == '4':
+            a = "0 17px 50px 0 rgba(0, 0, 0, 0.19)"
+        elif a == '5':
+            a = "0 25px 55px 0 rgba(0, 0, 0, 0.21)"
+        else:
+            a = "0 40px 77px 0 rgba(0, 0, 0, 0.22)"
+    if a != '': style_set['box-shadow'] = a.replace(',', '**')
+    ############ FontSize ############
+    a = getPropValue(stj, 'FontSize')
+    if a != '':
+        if a == 'large':
+            a = '24px'
+    if a != '': style_set['font-size'] = a
+    ############ FontColor ############
+    a = getPropValue(stj, 'FontColor')
+    if a != '': style_set['color'] = a.replace(',', '**')
+    ############ FontFamily ############
+    a = getPropValue(stj, 'FontFamily')
+    if a != '': style_set['font-family'] = a.replace(',', '**')
+    ############ FontWeight ############
+    a = getPropValue(stj, 'FontWeight')
+    if a != '': style_set['font-weight'] = a
 
     # style属性に埋め込める形に整形する
     style_set = str(style_set).replace(', ', '; ')  #これダメrbgaの,も影響を受ける
@@ -109,8 +154,8 @@ def getTag(name, kvs, endtag):
 def makeTag(stjs, part_id, u_sty):
     tag = ''
 
-    if stjs.has_key('v' + part_id) == True:
-       stj = stjs['v' + part_id]
+    if stjs.has_key('v_' + part_id) == True:
+       stj = stjs['v_' + part_id]
        # タグ名を決定する
        if stj.has_key('Role') == True:
            role = stj['Role']
@@ -119,7 +164,7 @@ def makeTag(stjs, part_id, u_sty):
                name = 'button'
                text = getPropValue(stj, 'Text')
                tag = getTag('button', {"keyv": {
-                   "id": "v{}".format(part_id),
+                   "id": "v_{}".format(part_id),
                    "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
                }, "inner": text}, True)
@@ -129,7 +174,7 @@ def makeTag(stjs, part_id, u_sty):
                text = getPropValue(stj, 'Text')
                ph = getPropValue(stj, 'Placeholder')
                tag = getTag('input', {"keyv": {
-                   "id": "v{}".format(part_id),
+                   "id": "v_{}".format(part_id),
                    "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
                    "placeholder": ph
@@ -140,7 +185,7 @@ def makeTag(stjs, part_id, u_sty):
                localsrc = getPropValue(stj, 'LocalFile')
                # TODO: 画像fileコピー
                tag = getTag('img', {"keyv": {
-                   "id": "v{}".format(part_id),
+                   "id": "v_{}".format(part_id),
                    "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
                    "src": localsrc
@@ -150,48 +195,31 @@ def makeTag(stjs, part_id, u_sty):
                name = 'webview'
                src = getPropValue(stj, 'URL')
                tag = getTag(name, {"keyv": {
-                   "id": "v{}".format(part_id),
+                   "id": "v_{}".format(part_id),
                    "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
                    "src": 'http://' + src
-               }}, True)
-           ############ Apricot Box ############
-           elif role == 'apricot-box':
-               name = 'div'
-               #sdw = "<div class='shadow shadow_bottom' style='{}'></div><div class='shadow shadow_top' style='{}'></div>";
-               sdw = ""
-               sha = getPropValue(stj, 'ShadowLevel')
-               if sha != '':
-                   if sha == '1':
-                       sdw = "rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px"
-                   elif sha == '2':
-                       sdw = "0 2px 10px 0 rgba(0, 0, 0, 0.16)"
-               stj['ShadowLevel'] = sdw
-               tag = getTag(name, {"keyv": {
-                   "id": "v{}".format(part_id),
-                   "style": '{}'.format(makeStyleSet(u_sty, stj)),
-                   "title": part_id,
                }}, True)
            ############ divタグ ############
            else:
                text = getPropValue(stj, 'Text')
                tag = getTag('div', {"keyv": {
-                   "id": "v{}".format(part_id),
+                   "id": "v_{}".format(part_id),
                    "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
                }, "inner": text}, True)
+       ############ divタグ ############
        else:
-           ############ divタグ ############
            text = getPropValue(stj, 'Text')
            tag = getTag('div', {"keyv": {
-                "id": "v{}".format(part_id),
+                "id": "v_{}".format(part_id),
                 "style": '{}'.format(makeStyleSet(u_sty, stj)),#'"{}"'.format(u_sty),
                 "title": part_id,
            }, "inner": text}, True)
+    ############ divタグ ############
     else:
-        ############ divタグ ############
         tag = getTag('div', {"keyv": {
-             "id": "v{}".format(part_id),
+             "id": "v_{}".format(part_id),
              "style": '"{}"'.format(u_sty),
              "title": part_id,
         }, "inner": ''}, True)
@@ -210,7 +238,7 @@ def loadStjFile():
        if len(line) > 0:
            if line[0] == '[':
                # part_idは一文字であることが保証されている
-               part_id = 'v' + line[1]
+               part_id = 'v_' + line[1]
                res[part_id] = {}
                now_reading = res[part_id]
            else:
@@ -272,7 +300,8 @@ def createBasicTags(title):
       '<body>'
     ]
     tags['after'] = [
-      '<script></script>',
+      '<script src="apricot.js"></script>',
+      '<script src="app.js"></script>',
       '</body>',
       '</html>'
     ]
