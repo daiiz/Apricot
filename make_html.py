@@ -289,30 +289,6 @@ def createDivTags(parts, colors):
         divs.append(element_tag)
     return divs
 
-# HTMLの基本タグを配列にして返す
-def createBasicTags(title):
-    tags = {"before": [], "after": []}
-    # 基本CSSスタイル
-    sty = '.apricot{} body{}'.format('{position: absolute; outline: none;-webkit-user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0)}', '{margin: 0 0 0 0;}')
-    tags["before"] = [
-      '<!doctype html>',
-      '<html>',
-      '<head>',
-      '<meta charset="utf-8" />',
-      '<link rel="stylesheet" href="apricot.css">',
-      '<title>{}</title>'.format(title),
-      '<style>{}</style>'.format(sty),
-      '</head>',
-      '<body>'
-    ]
-    tags['after'] = [
-      '<script src="apricot.js"></script>',
-      '<script src="app.js"></script>',
-      '</body>',
-      '</html>'
-    ]
-    return tags
-
 part_name = ''
 if __name__ == '__main__':
     # miファイル（現uファイル）を取得
@@ -327,20 +303,10 @@ if __name__ == '__main__':
     part_name = mi_path.split('.')[0].split('/')[1]
     # div配列を生成
     divs = createDivTags(parts, colors)
-    # 基本タグ配列を生成
-    basics = createBasicTags(part_name)
 
     # HTMLを出力
     htmldoc = ''
-    for tag in basics['before']:
-        htmldoc += tag
-
-    htmldoc += '<div id={} class="apricot" style="display: {}">'.format(part_name, 'block')
     for tag in divs:
-        htmldoc += tag
-    htmldoc += '</div>'
-
-    for tag in basics['after']:
         htmldoc += tag
 
     print(htmldoc)
