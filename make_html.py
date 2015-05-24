@@ -156,8 +156,8 @@ def getTag(name, kvs, endtag):
 def makeTag(stjs, part_id, u_sty):
     tag = ''
 
-    if stjs.has_key('v_' + part_id) == True:
-       stj = stjs['v_' + part_id]
+    if stjs.has_key("{}_{}".format(part_name, part_id)) == True:
+       stj = stjs["{}_{}".format(part_name, part_id)]
        # タグ名を決定する
        if stj.has_key('Role') == True:
            role = stj['Role']
@@ -166,7 +166,7 @@ def makeTag(stjs, part_id, u_sty):
                name = 'button'
                text = getPropValue(stj, 'Text')
                tag = getTag('button', {"keyv": {
-                   "id": "v_{}".format(part_id),
+                   "id": "{}_{}".format(part_name, part_id),
                    "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
                }, "inner": text}, True)
@@ -176,7 +176,7 @@ def makeTag(stjs, part_id, u_sty):
                text = getPropValue(stj, 'Text')
                ph = getPropValue(stj, 'Placeholder')
                tag = getTag('input', {"keyv": {
-                   "id": "v_{}".format(part_id),
+                   "id": "{}_{}".format(part_name, part_id),
                    "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
                    "placeholder": ph
@@ -187,7 +187,7 @@ def makeTag(stjs, part_id, u_sty):
                localsrc = getPropValue(stj, 'LocalFile')
                # TODO: 画像fileコピー
                tag = getTag('img', {"keyv": {
-                   "id": "v_{}".format(part_id),
+                   "id": "{}_{}".format(part_name, part_id),
                    "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
                    "src": localsrc
@@ -197,7 +197,7 @@ def makeTag(stjs, part_id, u_sty):
                name = 'webview'
                src = getPropValue(stj, 'URL')
                tag = getTag(name, {"keyv": {
-                   "id": "v_{}".format(part_id),
+                   "id": "{}_{}".format(part_name, part_id),
                    "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
                    "src": 'http://' + src
@@ -206,7 +206,7 @@ def makeTag(stjs, part_id, u_sty):
            else:
                text = getPropValue(stj, 'Text')
                tag = getTag('div', {"keyv": {
-                   "id": "v_{}".format(part_id),
+                   "id": "{}_{}".format(part_name, part_id),
                    "style": '{}'.format(makeStyleSet(u_sty, stj)),
                    "title": part_id,
                }, "inner": text}, True)
@@ -214,14 +214,14 @@ def makeTag(stjs, part_id, u_sty):
        else:
            text = getPropValue(stj, 'Text')
            tag = getTag('div', {"keyv": {
-                "id": "v_{}".format(part_id),
+                "id": "{}_{}".format(part_name, part_id),
                 "style": '{}'.format(makeStyleSet(u_sty, stj)),#'"{}"'.format(u_sty),
                 "title": part_id,
            }, "inner": text}, True)
     ############ divタグ ############
     else:
         tag = getTag('div', {"keyv": {
-             "id": "v_{}".format(part_id),
+             "id": "{}_{}".format(part_name, part_id),
              "style": '"{}"'.format(u_sty),
              "title": part_id,
         }, "inner": ''}, True)
@@ -240,7 +240,7 @@ def loadStjFile():
        if len(line) > 0:
            if line[0] == '[':
                # part_idは一文字であることが保証されている
-               part_id = 'v_' + line[1]
+               part_id = '{}_{}'.format(part_name, line[1])
                res[part_id] = {}
                now_reading = res[part_id]
            else:
@@ -281,7 +281,6 @@ def createDivTags(parts, colors):
         sty = 'top: {}px; left: {}px; width: {}px; height :{}px; background: {};'.format(part['top'], part['left'], part['width'], part['height'], rgb)
         # stjファイルの内容を反映させる
         element_tag = makeTag(stjs, a, sty)
-        #element_tag = '<{} class="apricot" id="v{}" style="{}" title="{}"></{}>'.format(tag['name'], a, tag['style'], a, tag['name'])
         divs.append(element_tag)
     return divs
 
@@ -309,25 +308,30 @@ def createBasicTags(title):
     ]
     return tags
 
-
+part_name = ''
 if __name__ == '__main__':
+    # miファイル（現uファイル）を取得
     mi_path = get_mi_path()
+    # mi_path: tmp/パーツ名.u
     j = load_json(mi_path)
     # パーツデータを取得
     parts = j['parts']
     # デフォルトカラー情報を取得
     colors = j['colors']
+    # パーツ名を取得する
+    part_name = mi_path.split('.')[0].split('/')[1]
     # div配列を生成
     divs = createDivTags(parts, colors)
     # 基本タグ配列を生成
-    basics = createBasicTags(mi_path.split('.')[0])
+    # パーツ名を取得する
+    basics = createBasicTags(part_name)
 
     # HTMLを出力
     htmldoc = ''
     for tag in basics['before']:
         htmldoc += tag
 
-    htmldoc += '<div id={} class="apricot" style="display: {}">'.format(mi_path.split('.')[0], 'block')
+    htmldoc += '<div id={} class="apricot" style="display: {}">'.format(part_name, 'block')
     for tag in divs:
         htmldoc += tag
     htmldoc += '</div>'
