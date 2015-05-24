@@ -9,7 +9,7 @@ Height: auto
 [5]
 ;Role: html-webview
 ;URL: www.google.com
-ShadowLevel: 1
+ShadowLevel: 0
 
 [4]
 Role: html-input
@@ -35,6 +35,7 @@ FontFamily: Roboto
 Role: html-img
 LocalFile: icon3.png
 Zindex: 11
+Cursor: pointer
 
 [0]
 ; 影付きのボックス

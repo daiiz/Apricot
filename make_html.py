@@ -89,7 +89,9 @@ def makeStyleSet(u_sty, stj):
     ############ ShadowLevel ############
     a = getPropValue(stj, 'ShadowLevel')
     if a != '':
-        if a == '1':
+        if a == '0':
+            a = ""
+        elif a == '1':
             a = "rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px"
         elif a == '2':
             a = "0 2px 10px 0 rgba(0, 0, 0, 0.16)"
