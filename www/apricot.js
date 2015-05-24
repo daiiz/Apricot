@@ -31,7 +31,7 @@ apricot.log = function(msg) {
 
 //////// Event Listeners ////////
 apricot.setEventsListeners = function() {
-  var events = ['click'];
+  var events = ['click', 'change'];
   for(var e = 0; e < events.length; e++) {
     // イベントを仕掛ける
     window.addEventListener(events[e], function(info) {
