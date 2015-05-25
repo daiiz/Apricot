@@ -17,26 +17,18 @@ apricot.api.ShowBrick = function(brick_id) {
 
 /* パーツを表示する */
 apricot.api.ShowParts = function(parts_id) {
-  var obj = apricot.querySelector('#', parts_id);
-  obj.style.visibility = "visible";
-  obj.style.opacity = 1;
-  obj.style.transitionDelay = "0s";
-  //apricot.querySelector('#', parts_id).style.display = 'block';
+  apricot.querySelector('#', parts_id).style.display = 'block';
 };
 
 /* パーツを非表示にする */
 apricot.api.HideParts = function(parts_id) {
-  var obj = apricot.querySelector('#', parts_id);
-  obj.style.visibility = "hidden";
-  obj.style.opacity = 0;
-  obj.style.transition = "visibility 0s linear 0.5s,opacity 0.5s linear";
-  //apricot.querySelector('#', parts_id).style.display = 'none';
+  apricot.querySelector('#', parts_id).style.display = 'none';
 };
 
 /* パーツの表示／非表示を切り替える */
 apricot.api.ToggleParts = function(parts_id) {
-  var state = apricot.querySelector('#', parts_id).style.visibility || 'visible';
-  if(state == 'visible') {
+  var state = apricot.querySelector('#', parts_id).style.display || 'block';
+  if(state == 'block') {
     apricot.api.HideParts(parts_id)
   }else {
     apricot.api.ShowParts(parts_id)
