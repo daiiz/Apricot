@@ -4,21 +4,62 @@
  */
 
 var apricot = apricot || {};
+apricot.api = {};
 
 /**
- * ユーザーが呼び出し可能なメソッドは
+ * ユーザーが呼び出し可能なAPIは
  * 名前の先頭を大文字にする
  */
+
+apricot.api.ShowBrick = function(brick_id) {
+
+};
+
+/* パーツを表示する */
+apricot.api.ShowParts = function(parts_id) {
+  var obj = apricot.querySelector('#', parts_id);
+  obj.style.visibility = "visible";
+  obj.style.opacity = 1;
+  obj.style.transitionDelay = "0s";
+  //apricot.querySelector('#', parts_id).style.display = 'block';
+};
+
+/* パーツを非表示にする */
+apricot.api.HideParts = function(parts_id) {
+  var obj = apricot.querySelector('#', parts_id);
+  obj.style.visibility = "hidden";
+  obj.style.opacity = 0;
+  obj.style.transition = "visibility 0s linear 0.5s,opacity 0.5s linear";
+  //apricot.querySelector('#', parts_id).style.display = 'none';
+};
+
+/* パーツの表示／非表示を切り替える */
+apricot.api.ToggleParts = function(parts_id) {
+  var state = apricot.querySelector('#', parts_id).style.visibility || 'visible';
+  if(state == 'visible') {
+    apricot.api.HideParts(parts_id)
+  }else {
+    apricot.api.ShowParts(parts_id)
+  }
+}
+
 
 /**
  * apricotの内部処理用メソッド
  */
+//////// Apricot wrapper ////////
+apricot.querySelector = function(selector_prefix, selector_body) {
+  return apricot.Stage().querySelector(selector_prefix + selector_body);
+}
 
 //////// Apricot 定数 ////////
 apricot.C = {
   "cn": "apricot"
 };
 
+apricot.Stage = function() {
+  return document;
+}
 //////// Apricot Stage Element ////////
 apricot.stage = function() {
   return document;
