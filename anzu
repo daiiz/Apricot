@@ -47,4 +47,4 @@ if __name__ == '__main__':
     exeCommand('python make_index_html.py {} > {}/index.html'.format(recipefilename, DIR_WWW))
 
     # Chrome アプリを起動する(for mac)
-    exeCommand('python launch_chrome_app.py run {}'.format(DIR_WWW))
+    exeCommand('python lib/launch_chrome_app.py run {}'.format(DIR_WWW))
