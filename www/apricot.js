@@ -11,29 +11,27 @@ apricot.api = {};
  * 名前の先頭を大文字にする
  */
 
+/* ブリックの表示／非表示切り替え（アニメーションなし） */
 apricot.api.ShowBrick = function(brick_id) {
-
+  apricot.removeClass('element-hidden', brick_id);
+  apricot.addClass('element-visible', brick_id);
 };
-
-/* パーツを表示する */
-apricot.api.ShowParts = function(parts_id) {
-  apricot.querySelector('#', parts_id).style.display = 'block';
+apricot.api.HideBrick = function(brick_id) {
+  apricot.removeClass('element-visible', brick_id);
+  apricot.addClass('element-hidden', brick_id);
 };
-
-/* パーツを非表示にする */
-apricot.api.HideParts = function(parts_id) {
-  apricot.querySelector('#', parts_id).style.display = 'none';
-};
-
-/* パーツの表示／非表示を切り替える */
-apricot.api.ToggleParts = function(parts_id) {
-  var state = apricot.querySelector('#', parts_id).style.display || 'block';
-  if(state == 'block') {
-    apricot.api.HideParts(parts_id)
+apricot.api.ToggleBrick = function(brick_id) {
+  if(apricot.hasClass('element-hidden', brick_id)) {
+    apricot.api.ShowBrick(brick_id);
   }else {
-    apricot.api.ShowParts(parts_id)
+    apricot.api.HideBrick(brick_id);
   }
 }
+
+/* パーツの表示／非表示切り替え（アニメーションなし） */
+apricot.api.ShowParts = apricot.api.ShowBrick;
+apricot.api.HideParts = apricot.api.HideBrick;
+apricot.api.ToggleParts = apricot.api.ToggleBrick;
 
 
 /**
@@ -53,6 +51,7 @@ apricot.join = function(splitter, arr) {
   }
   return str.substring(1, str.length);
 }
+
 //////// split wrapper ////////
 apricot.split = function(splitter, remove_word, str) {
   var arr = str.split(splitter);

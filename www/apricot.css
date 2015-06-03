@@ -7,3 +7,12 @@
    border-radius: inherit;
    pointer-events: none;
 }
+
+/* ShowBrick, HideBrick, ToggleBrick */
+.element-visible {
+  visibility: visible;
+}
+
+.element-hidden {
+  visibility: hidden;
+}

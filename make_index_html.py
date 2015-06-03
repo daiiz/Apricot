@@ -59,13 +59,13 @@ if __name__ == '__main__':
     # パーツを1つずつ読み取り追加する
     for part in targets:
         # 表示／非表示情報
-        display = 'none'
+        display_class = 'element-hidden'
         # TODO: jsと一本化
         if part[-1] == '*':
-            display = 'block'
+            display_class = 'element-visible'
             part = part[:-1].strip()
         f = open('tmp/{}.div'.format(part), 'r')
-        htmldoc += '\n<div id="{}" class="apricot" style="display: {};">'.format(part, display)
+        htmldoc += '\n<div id="{}" class="apricot {}">'.format(part, display_class)
         htmldoc += f.read()
         htmldoc += '\n</div>'
         f.close()
