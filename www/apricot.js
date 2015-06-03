@@ -39,9 +39,53 @@ apricot.api.ToggleParts = function(parts_id) {
 /**
  * apricotの内部処理用メソッド
  */
-//////// Apricot wrapper ////////
+
+//////// querySelector wrapper ////////
 apricot.querySelector = function(selector_prefix, selector_body) {
   return apricot.Stage().querySelector(selector_prefix + selector_body);
+}
+
+//////// join wrapper ////////
+apricot.join = function(splitter, arr) {
+  var str = '';
+  for(var i = 0; i < arr.length; i++) {
+    str = str + splitter + arr[i];
+  }
+  return str.substring(1, str.length);
+}
+//////// split wrapper ////////
+apricot.split = function(splitter, remove_word, str) {
+  var arr = str.split(splitter);
+  var res_arr = [];
+  for(var i = 0; i < arr.length; i++) {
+    if(arr[i] != '' && arr[i] != remove_word) res_arr.push(arr[i]);
+  }
+  return res_arr;
+}
+
+//////// class 操作 ////////
+apricot.addClass = function(classname, id) {
+  var cns = apricot.querySelector('#', id).className;
+  cns = apricot.split(' ', null, cns);
+  cns.push(classname);
+  cns = apricot.join(' ', cns);
+  apricot.querySelector('#', id).className = cns;
+}
+
+apricot.removeClass = function(classname, id) {
+  var cns = apricot.querySelector('#', id).className;
+  cns = apricot.split(' ', classname, cns);
+  cns = apricot.join(' ', cns);
+  apricot.querySelector('#', id).className = cns;
+}
+
+apricot.hasClass = function(className, id) {
+  var cns = apricot.querySelector('#', id).className;
+  cns_original = apricot.split(' ', null, cns);
+  cns_removed = apricot.split(' ', className, cns);
+  // cns_original と cns_removed の長さが等しくなければ検索ヒット
+  if(cns_original.length !== cns_removed.length) return true;
+  return false;
 }
 
 //////// Apricot 定数 ////////
