@@ -8,7 +8,9 @@
    pointer-events: none;
 }
 
-/* ShowBrick, HideBrick, ToggleBrick */
+/* ShowBrick, HideBrick, ToggleBrick
+ * ShowParts, HideParts, ToggleParts
+ */
 .element-visible {
   visibility: visible;
 }

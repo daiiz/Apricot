@@ -11,33 +11,42 @@ apricot.api = {};
  * 名前の先頭を大文字にする
  */
 
-/* ブリックの表示／非表示切り替え（アニメーションなし） */
-apricot.api.ShowBrick = function(brick_id) {
-  apricot.removeClass('element-hidden', brick_id);
-  apricot.addClass('element-visible', brick_id);
+/* ブリックの表示・非表示切り替え（アニメーションなし） */
+apricot.api.ShowBrick = function(id) {
+  apricot.removeClass('element-hidden', id);
+  apricot.addClass('element-visible', id);
 };
-apricot.api.HideBrick = function(brick_id) {
-  apricot.removeClass('element-visible', brick_id);
-  apricot.addClass('element-hidden', brick_id);
+apricot.api.HideBrick = function(id) {
+  apricot.removeClass('element-visible', id);
+  apricot.addClass('element-hidden', id);
 };
-apricot.api.ToggleBrick = function(brick_id) {
-  if(apricot.hasClass('element-hidden', brick_id)) {
-    apricot.api.ShowBrick(brick_id);
+apricot.api.ToggleBrick = function(id) {
+  if(apricot.hasClass('element-hidden', id)) {
+    apricot.api.ShowBrick(id);
   }else {
-    apricot.api.HideBrick(brick_id);
+    apricot.api.HideBrick(id);
   }
-}
+};
 
-/* パーツの表示／非表示切り替え（アニメーションなし） */
+/* ブリックを指定した座標まで移動させる（アニメーションなし） */
+apricot.api.MoveBrickTo = function(left, top, id) {
+  apricot.setStyle([
+    {"left": apricot.toPx(left)},
+    {"top": apricot.toPx(top)}
+  ], id);
+};
+
+/* エイリアス */
+/* パーツの表示・非表示切り替え（アニメーションなし） */
 apricot.api.ShowParts = apricot.api.ShowBrick;
 apricot.api.HideParts = apricot.api.HideBrick;
 apricot.api.ToggleParts = apricot.api.ToggleBrick;
-
+/* パーツを指定した座標まで移動させる（アニメーションなし） */
+apricot.api.MovePartsTo = apricot.api.MoveBrickTo;
 
 /**
  * apricotの内部処理用メソッド
  */
-
 //////// querySelector wrapper ////////
 apricot.querySelector = function(selector_prefix, selector_body) {
   return apricot.Stage().querySelector(selector_prefix + selector_body);
@@ -60,6 +69,17 @@ apricot.split = function(splitter, remove_word, str) {
     if(arr[i] != '' && arr[i] != remove_word) res_arr.push(arr[i]);
   }
   return res_arr;
+}
+
+//////// style属性 操作 ////////
+apricot.setStyle = function(style_kv_arr, id) {
+  var stys = apricot.querySelector('#', id).style || {};
+  for(var i = 0; i < style_kv_arr.length; i++) {
+    var add_sty = style_kv_arr[i];
+    var attr = Object.keys(add_sty)[0];
+    var value = add_sty[attr];
+    stys[attr] = value;
+  }
 }
 
 //////// class 操作 ////////
@@ -95,9 +115,22 @@ apricot.C = {
 apricot.Stage = function() {
   return document;
 }
+
 //////// Apricot Stage Element ////////
 apricot.stage = function() {
   return document;
+}
+
+//////// Apricot Tool ////////
+apricot.toPx = function(v) {
+  v = '' + v;
+  if(v.search('px') == -1) return v + 'px';
+  return v;
+};
+
+apricot.toNum = function(v) {
+  v = '' + v;
+  return +(v.replace(/px/gi, ''));
 }
 
 //////// Apricot Logger ////////
