@@ -97,6 +97,11 @@ apricot.split = function(splitter, remove_word, str) {
   return res_arr;
 }
 
+//////// 属性設定 操作 ////////
+apricot.setAttr = function(attr, value, id) {
+  apricot.querySelector('#', id)[attr] = value;
+}
+
 //////// style属性 操作 ////////
 apricot.setStyle = function(style_kv_arr, id) {
   var stys = apricot.querySelector('#', id).style || {};
