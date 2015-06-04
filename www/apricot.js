@@ -4,7 +4,11 @@
  */
 
 var apricot = apricot || {};
-apricot.api = {};
+apricot.API = {};
+apricot.API.v1 = {};
+
+/* APIのデフォルトバージョンを指定 */
+apricot.api = apricot.API.v1;
 
 /**
  * ユーザーが呼び出し可能なAPIは
@@ -35,6 +39,28 @@ apricot.api.MoveBrickTo = function(left, top, id) {
     {"top": apricot.toPx(top)}
   ], id);
 };
+
+/* コピー元の真上にブリックを複製する（アニメーションなし）
+ * 複製されたブリックのidを返す。初期値では非表示状態。
+ */
+apricot.api.DuplicateBrick = function(id) {
+  var target = apricot.querySelector('#', id);
+  var new_id = target.id + '__c' + Math.floor(Math.random()*100000);
+  var attrv = target.attributes;
+  var attrs_len = attrv.length;
+
+  var copied = document.createElement(target.tagName);
+  for(var i = 0; i < attrs_len; i++) {
+    copied.setAttribute(attrv[i].nodeName, attrv[i].nodeValue);
+  }
+  var parent = target.parentNode;
+  copied.id = new_id;
+  copied.className += ' element-visible';
+  copied.className = copied.className.replace(/element\-visible/gi, 'element-hidden');
+
+  parent.appendChild(copied);
+  return new_id;
+}
 
 /* エイリアス */
 /* パーツの表示・非表示切り替え（アニメーションなし） */
