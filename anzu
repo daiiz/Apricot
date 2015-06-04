@@ -35,11 +35,6 @@ if __name__ == '__main__':
     # パーツファイル（divファイル）を生成する
     for target in targets:
         if target[-1] == '*': target = target[:-1].strip()
-        # ビルド時必須設定ファイル（stjファイル）の有無を確認し、
-        # 無ければからファイルを生成する
-        stjfile = '{}/{}.stj'.format(DIR_ORIGINAL, target)
-        if os.path.exists(stjfile) == False:
-            exeCommand('touch {}'.format(stjfile))
 
         exeCommand('./build {}'.format(target))
 
