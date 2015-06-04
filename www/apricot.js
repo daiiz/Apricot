@@ -175,7 +175,7 @@ apricot.setEventsListeners = function() {
   for(var e = 0; e < events.length; e++) {
     // イベントを仕掛ける
     window.addEventListener(events[e], function(info) {
-      if(info.target.className === apricot.C.cn) {
+      if(info.target.className.search(apricot.C.cn) != -1) {
         var en = 'apricot-' + info.type;
         // カスタムイベントを生成し、発火する
         var ev = new CustomEvent(en, {

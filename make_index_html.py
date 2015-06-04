@@ -41,7 +41,7 @@ def createBasicTags(title):
       '<script src="apricot.js"></script>',
       '<script src="app.js"></script>',
       '<script src="Html.js"></script>',
-      '<script src="apricot_manifest.json"></script>'
+      '<!--script src="apricot_manifest.json"></script-->'
       '</body>',
       '</html>'
     ]
