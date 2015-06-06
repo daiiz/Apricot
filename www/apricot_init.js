@@ -23,8 +23,24 @@ apricot.init.applyDesign = function(brick_design, tag) {
         case "Content":
             tag.innerHTML = value;
             break;
+        case "Top":
+            if(value[0] == '+' || value[1] == '-') {
+              var top = apricot.toNum(value);
+              var top = apricot.toNum(tag.style.top) + top;
+              tag.style.top = apricot.toPx(top);
+            }
+            break;
+        case "Left":
+            if(value[0] == '+' || value[1] == '-') {
+              var left = apricot.toNum(value);
+              var left = apricot.toNum(tag.style.left) + left;
+              tag.style.left = apricot.toPx(left);
+            }
+            break;
         case "ShadowLevel":
-            if(value == 1) {
+            if(value == 0) {
+              v = "none";
+            }else if(value == 1) {
               v = "rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px";
             }else if(value == 2) {
               v = "0 2px 10px 0 rgba(0, 0, 0, 0.16)";
@@ -75,7 +91,8 @@ apricot.init.buidUI = function(manifest) {
       }
       // idを設定する
       var id = parts[i] + '_' + brick_id.split('_')[1];
-      tag.setAttribute('id', id + '-init');
+      var id_init = id + "-init";
+      tag.setAttribute('id', id_init);
       // width, height, backgroundColor を継承する
       tag.style.width = apricot.querySelector('#', id).style.width;
       tag.style.height = apricot.querySelector('#', id).style.height;
@@ -83,11 +100,17 @@ apricot.init.buidUI = function(manifest) {
       // top, left を継承する
       tag.style.top = apricot.querySelector('#', id).style.top;
       tag.style.left = apricot.querySelector('#', id).style.left;
+      tag.title = apricot.querySelector('#', id).title;
       // CSS Styles 及び Apricot Design を適用する
       tag = apricot.init.applyDesign((brick.design || {}), tag);
       // classを設定する
       tag.className = apricot.querySelector('#', id).className;
-      console.log(tag);
+      // タグを描画する
+      apricot.querySelector('#', 'apricot_workspace').innerHTML = '';
+      apricot.querySelector('#', 'apricot_workspace').appendChild(tag);
+      tag = apricot.querySelector('#', 'apricot_workspace').innerHTML;
+      apricot.querySelector('#', id).outerHTML = tag;
+      apricot.querySelector('#', id_init).id = id;
     }
 
   }

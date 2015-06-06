@@ -16,6 +16,12 @@ apricot.api = apricot.API.v1;
  * 名前の先頭を大文字にする
  */
 
+/* id判定 */
+apricot.api.CheckId = function(id_with_hyphen, id) {
+  if(id_with_hyphen.split('-')[0] == id) return true;
+  return false;
+}
+
 /* ブリックの表示・非表示切り替え（アニメーションなし） */
 apricot.api.ShowBrick = function(id) {
   apricot.removeClass('element-hidden', id);
@@ -71,6 +77,57 @@ apricot.api.ToggleParts = apricot.api.ToggleBrick;
 /* パーツを指定した座標まで移動させる（アニメーションなし） */
 apricot.api.MovePartsTo = apricot.api.MoveBrickTo;
 
+////////////////////////////////////////////////////////////////////////////////
+/* ドロワーパネル */
+apricot.api.OpenDrawerFromLeft = function(id, sec) {
+  var obj = apricot.querySelector('#', id);
+  var t = apricot.toNum(obj.firstChild.style.top);
+  var l = apricot.toNum(obj.firstChild.style.left);
+  var w = apricot.toNum(obj.firstChild.style.width) || obj.firstChild.offsetWidth;  // TODO: 子要素のなかで最も大きいwidthを取るようにする
+  // 画面の左端外に追いやる
+  var mw = -l-w;
+  apricot.api.MovePartsTo(mw, t, id);
+  // 可視化
+  apricot.api.ShowParts(id);
+  // アニメーションの設定
+  var tf_tr3 = "translate3d("+ ((-1)*(mw)) +"px, 0, 0)";  // transform
+  var tf_tra = "all "+ sec +"s ease";  // transition
+  apricot.setStyle([
+    {"transition": tf_tra},
+    {"transform": tf_tr3}
+  ], id);
+}
+
+apricot.api.CloseDrawerFromLeft = function(id, sec) {
+  var obj = apricot.querySelector('#', id);
+  // 追いやる座標を取得
+  var t = apricot.toNum(obj.style.top);
+  var l = apricot.toNum(obj.style.left);
+  // 可視化
+  apricot.api.ShowParts(id);
+  // アニメーションの設定
+  var tf_tr3 = "translate3d("+ l +"px, 0, 0)";  // transform
+  var tf_tra = "all "+ sec +"s ease";  // transition
+  apricot.setStyle([
+    {"transition": tf_tra},
+    {"transform": tf_tr3}
+  ], id);
+}
+
+apricot.api.ToggleDrawerFromLeft = function(id, sec) {
+  var obj = apricot.querySelector('#', id);
+  var l = obj.style.transform || '(-1px, 0, 0)';
+  var l = l.split('(')[1].split('px')[0];
+  if(apricot.toNum(l) >= 0) {
+    apricot.api.CloseDrawerFromLeft(id, sec);
+  }else if(apricot.toNum(l) < 0){
+    apricot.api.OpenDrawerFromLeft(id, sec);
+  }
+}
+
+// TODO: transitionを解除するメソッド
+////////////////////////////////////////////////////////////////////////////////
+
 /**
  * apricotの内部処理用メソッド
  */
@@ -116,11 +173,13 @@ apricot.setStyle = function(style_kv_arr, id) {
 
 //////// class 操作 ////////
 apricot.addClass = function(classname, id) {
-  var cns = apricot.querySelector('#', id).className;
-  cns = apricot.split(' ', null, cns);
-  cns.push(classname);
-  cns = apricot.join(' ', cns);
-  apricot.querySelector('#', id).className = cns;
+  if(apricot.hasClass(classname, id) == false) {
+    var cns = apricot.querySelector('#', id).className;
+    cns = apricot.split(' ', null, cns);
+    cns.push(classname);
+    cns = apricot.join(' ', cns);
+    apricot.querySelector('#', id).className = cns;
+  }
 }
 
 apricot.removeClass = function(classname, id) {

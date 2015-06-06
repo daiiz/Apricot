@@ -38,6 +38,7 @@ def createBasicTags(title):
       '<body>'
     ]
     tags['after'] = [
+      '<div id="apricot_workspace"></div>',
       '<script src="apricot.js"></script>',
       '<script src="apricot_init.js"></script>',
       '<script src="app.js"></script>',

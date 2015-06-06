@@ -41,7 +41,7 @@ apricot.manifest = {
         "backgroundColor": "rgba(0, 0, 0, 0)",
         "zIndex": 11,
         "width": "200px",
-        "fontColor": "#fff",
+        "color": "#fff",
         "fontWeight": 200,
         "fontFamily": "Roboto",
         "Content": "Apricot Brick",
@@ -62,9 +62,10 @@ apricot.manifest = {
       "role": "html-button",
       "property": {},
       "design": {
-        "Content": "Hello, Apricot!",
+        "Content": "Hello,Apricot!",
         "width": "auto",
         "height": "auto",
+        "backgroundColor": ""
       }
     },
 

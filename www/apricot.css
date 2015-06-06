@@ -8,6 +8,10 @@
    pointer-events: none;
 }
 
+#apricot_workspace {
+  display: none;
+}
+
 /* ShowBrick, HideBrick, ToggleBrick
  * ShowParts, HideParts, ToggleParts
  */
