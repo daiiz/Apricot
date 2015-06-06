@@ -4,6 +4,7 @@
  */
 
 var apricot = apricot || {};
+apricot.init = {};
 apricot.API = {};
 apricot.API.v1 = {};
 
@@ -45,7 +46,7 @@ apricot.api.MoveBrickTo = function(left, top, id) {
  */
 apricot.api.DuplicateBrick = function(id) {
   var target = apricot.querySelector('#', id);
-  var new_id = target.id + '__c' + Math.floor(Math.random()*100000);
+  var new_id = target.id + '-c' + Math.floor(Math.random()*100000);
   var attrv = target.attributes;
   var attrs_len = attrv.length;
 
@@ -198,8 +199,15 @@ apricot.setEventsListeners = function() {
   return 0;
 };
 
+//////// 初回起動時デザイン初期化 ////////
+apricot.buidInitUI = function(manifest) {
+
+}
+
+
 //////// Apricot Ready. ////////
 window.addEventListener('load', function(e) {
   apricot.log("Apricot is ready.");
   apricot.setEventsListeners();
+  apricot.init.buidUI(apricot.manifest);
 }, false);

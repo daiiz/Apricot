@@ -9,9 +9,9 @@
     }
   },
   "icons": {
-    "48":  "icon3.png",
-    "16":  "icon3.png",
-    "128": "icon3.png"
+    "48":  "apricot.png",
+    "16":  "apricot.png",
+    "128": "apricot.png"
   },
   "permissions": ["storage", "unlimitedStorage", "<all_urls>", "webview"]
 }

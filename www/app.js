@@ -2,7 +2,7 @@
 
 window.addEventListener('apricot-click', function(e) {
   var info = e.detail;
-  console.log(333);
+  console.log(info);
   if(info.brick.id == 'base5_1') {
     apricot.api.ToggleParts('panel');
   }

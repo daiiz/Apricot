@@ -39,9 +39,10 @@ def createBasicTags(title):
     ]
     tags['after'] = [
       '<script src="apricot.js"></script>',
+      '<script src="apricot_init.js"></script>',
       '<script src="app.js"></script>',
       '<script src="Html.js"></script>',
-      '<!--script src="apricot_manifest.json"></script-->'
+      '<script src="apricot_manifest.js"></script>'
       '</body>',
       '</html>'
     ]
