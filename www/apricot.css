@@ -22,3 +22,13 @@
 .element-hidden {
   visibility: hidden;
 }
+
+.element-visible-scale {
+  visibility: visible;
+  transform: scale(1);
+}
+
+.element-hidden-scale {
+  visibility: visible;
+  transform: scale(0);
+}

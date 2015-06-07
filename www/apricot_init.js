@@ -11,6 +11,11 @@ apricot.init.applyDesign = function(brick_design, tag) {
       // Apricotの個別対応スタイル
       var v = '';
       switch (key) {
+        case "Expandable":
+           if(value == true) {
+             tag.className = "apricot element-hidden-scale";
+           }
+           break;
         case "Visible":
             v = (value == true) ? "visible" : "hidden";
             tag.style.visibility = v;
@@ -57,6 +62,18 @@ apricot.init.applyDesign = function(brick_design, tag) {
             break;
         default:
             break;
+        case "Cardboard":
+            if(value == 'a') {
+              tag.style.borderWidth = "1px";
+              tag.style.borderStyle = "solid";
+              tag.style.borderColor = "#d8d8d8";
+              tag.style.borderBottomWidth = "2px";
+              tag.style.borderTopWidth = 0;
+            }else if(value == 'b') {
+              tag.style.boxShadow =  "0px 1px 1px #BBB4A5";
+              tag.style.borderTopWidth =  0;
+            }
+            break;
       }
     }
   }
@@ -101,10 +118,10 @@ apricot.init.buidUI = function(manifest) {
       tag.style.top = apricot.querySelector('#', id).style.top;
       tag.style.left = apricot.querySelector('#', id).style.left;
       tag.title = apricot.querySelector('#', id).title;
-      // CSS Styles 及び Apricot Design を適用する
-      tag = apricot.init.applyDesign((brick.design || {}), tag);
       // classを設定する
       tag.className = apricot.querySelector('#', id).className;
+      // CSS Styles 及び Apricot Design を適用する
+      tag = apricot.init.applyDesign((brick.design || {}), tag);
       // タグを描画する
       apricot.querySelector('#', 'apricot_workspace').innerHTML = '';
       apricot.querySelector('#', 'apricot_workspace').appendChild(tag);

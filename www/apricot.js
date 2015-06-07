@@ -22,6 +22,11 @@ apricot.api.CheckId = function(id_with_hyphen, id) {
   return false;
 }
 
+/**/
+apricot.api.ShowScaleBrick = function(id) {
+
+}
+
 /* ブリックの表示・非表示切り替え（アニメーションなし） */
 apricot.api.ShowBrick = function(id) {
   apricot.removeClass('element-hidden', id);
@@ -76,6 +81,42 @@ apricot.api.HideParts = apricot.api.HideBrick;
 apricot.api.ToggleParts = apricot.api.ToggleBrick;
 /* パーツを指定した座標まで移動させる（アニメーションなし） */
 apricot.api.MovePartsTo = apricot.api.MoveBrickTo;
+
+
+////////////////////////////////////////////////////////////////////////////////
+/* エクスパンド */
+// origin: 水平方向l,c,r * 垂直方向t,c,b
+
+
+apricot.api.OpenExpandBrick = function(id, origin) {
+  apricot.setStyle([
+    {"opacity": 1},
+    {"transition": "transform 0.3s ease"},
+    {"transform-origin": origin}
+  ], id);
+  apricot.removeClass('element-hidden-scale', id);
+  apricot.addClass('element-visible-scale', id);
+};
+
+apricot.api.CloseExpandBrick = function(id, origin) {
+  apricot.setStyle([
+    {"opacity": 1},
+    {"transition": "transform 0.3s ease"},
+    {"transform-origin": origin}
+  ], id);
+  apricot.addClass('element-hidden-scale', id);
+  apricot.removeClass('element-visible-scale', id);
+};
+
+apricot.api.ToggleExpandBrick = function(id, origin) {
+  if(origin == null) origin = 'center center';
+  if(apricot.hasClass('element-hidden-scale', id)) {
+    apricot.api.OpenExpandBrick(id, origin);
+  }else {
+    apricot.api.CloseExpandBrick(id, origin);
+  }
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 /* ドロワーパネル */

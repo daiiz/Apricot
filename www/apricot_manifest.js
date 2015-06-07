@@ -54,7 +54,8 @@ apricot.manifest = {
       "role": "html-div",
       "property": {},
       "design": {
-        "ShadowLevel": 0
+        "ShadowLevel": 0,
+        "backgroundColor": "#e9e7e4"
       }
     },
 
@@ -84,7 +85,18 @@ apricot.manifest = {
   "panel": {
     "brick_1": {
       "design": {
-        "backgroundColor": "#e9e7e4"
+        "backgroundColor": "#e5e5e5"
+      }
+    }
+  },
+
+  /* card.png */
+  "card": {
+    "brick_0": {
+      "design": {
+        "borderRadius": "2px",
+        "Cardboard": "b",
+        "Expandable": true
       }
     }
   }
