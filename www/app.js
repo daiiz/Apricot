@@ -13,8 +13,13 @@ window.addEventListener('apricot-click', function(e) {
     apricot.api.ShowBrick(c);
     apricot.api.MoveBrickTo(100, 100, c);
     */
-    apricot.api.MovePartsTo(150, 200, "card_0");
-    apricot.api.ToggleExpandBrick("card_0", "center center");
+    //apricot.api.MovePartsTo(150, 200, "card_0");
+    var new_id = apricot.api.CopyBrickInParts('base5_5', 'card_0');
+    //apricot.api.ToggleExpandBrick(new_id, "center center");
+  }
+
+  if(apricot.api.CheckId(info.brick.id, 'base5_7')) {
+    apricot.api.ToggleExpandBrick(document.getElementById("base5_5").getElementsByClassName('apricot')[0].id, "center center");
   }
 
 

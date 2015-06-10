@@ -26,9 +26,13 @@
 .element-visible-scale {
   visibility: visible;
   transform: scale(1);
+  opacity: 1;
+  transition: transform 0.3s ease;
 }
 
 .element-hidden-scale {
   visibility: visible;
   transform: scale(0);
+  opacity: 1;
+  transition: transform 0.3s ease;
 }

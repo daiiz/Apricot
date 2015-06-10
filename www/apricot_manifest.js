@@ -6,7 +6,8 @@ apricot.manifest = {
       "design": {
         "ShadowLevel": 3,
         "zIndex": 10,
-        "backgroundColor": "#3F51B5"
+        "backgroundColor": "#3F51B5",
+        "Width": "100%"  // 名称要検討; base5自身に適用できないか
       }
     },
 
@@ -55,7 +56,12 @@ apricot.manifest = {
       "property": {},
       "design": {
         "ShadowLevel": 0,
-        "backgroundColor": "#e9e7e4"
+        "backgroundColor": "#e9e7e4",
+        "overflow-y": "scroll",
+        "padding": "10px",
+        "boxSizing": "border-box",
+        "display": "flex",
+        "flex-wrap": "wrap"
       }
     },
 
@@ -96,7 +102,11 @@ apricot.manifest = {
       "design": {
         "borderRadius": "2px",
         "Cardboard": "b",
-        "Expandable": true
+        "Expandable": true,
+        "Animation": "expand",
+        "marginBottom": "10px",
+        "marginRight": "5px",
+        "marginLeft": "5px"
       }
     }
   }

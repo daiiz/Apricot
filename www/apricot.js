@@ -22,9 +22,22 @@ apricot.api.CheckId = function(id_with_hyphen, id) {
   return false;
 }
 
-/**/
-apricot.api.ShowScaleBrick = function(id) {
+/* */
+// 要素#idは非表示状態であることを仮定する
+apricot.api.CopyBrickInParts = function(parts_id, id) {
+  var child_id = apricot.api.DuplicateBrick(id, parts_id);
+  var child = apricot.querySelector('#', child_id);
+  child.id = child_id;
+  child.style.top = "";
+  child.style.left = "";
+  child.style.position = "relative";
+  var t = child.outerHTML;
+  apricot.removeClass('element-hidden', child_id);
+  apricot.removeClass('element-hidden-scale', child_id);
+  apricot.addClass('element-visible-scale', child_id);
 
+  //$("#" + parts_id).append(t);
+  return child_id;
 }
 
 /* ブリックの表示・非表示切り替え（アニメーションなし） */
@@ -55,7 +68,7 @@ apricot.api.MoveBrickTo = function(left, top, id) {
 /* コピー元の真上にブリックを複製する（アニメーションなし）
  * 複製されたブリックのidを返す。初期値では非表示状態。
  */
-apricot.api.DuplicateBrick = function(id) {
+apricot.api.DuplicateBrick = function(id, p_id) {
   var target = apricot.querySelector('#', id);
   var new_id = target.id + '-c' + Math.floor(Math.random()*100000);
   var attrv = target.attributes;
@@ -65,7 +78,7 @@ apricot.api.DuplicateBrick = function(id) {
   for(var i = 0; i < attrs_len; i++) {
     copied.setAttribute(attrv[i].nodeName, attrv[i].nodeValue);
   }
-  var parent = target.parentNode;
+  var parent = apricot.querySelector('#', p_id) || target.parentNode;
   copied.id = new_id;
   copied.className += ' element-visible';
   copied.className = copied.className.replace(/element\-visible/gi, 'element-hidden');
@@ -90,8 +103,8 @@ apricot.api.MovePartsTo = apricot.api.MoveBrickTo;
 
 apricot.api.OpenExpandBrick = function(id, origin) {
   apricot.setStyle([
-    {"opacity": 1},
-    {"transition": "transform 0.3s ease"},
+    //{"opacity": 1},
+    //{"transition": "transform 0.3s ease"},
     {"transform-origin": origin}
   ], id);
   apricot.removeClass('element-hidden-scale', id);
@@ -100,8 +113,8 @@ apricot.api.OpenExpandBrick = function(id, origin) {
 
 apricot.api.CloseExpandBrick = function(id, origin) {
   apricot.setStyle([
-    {"opacity": 1},
-    {"transition": "transform 0.3s ease"},
+    //{"opacity": 1},
+    //{"transition": "transform 0.3s ease"},
     {"transform-origin": origin}
   ], id);
   apricot.addClass('element-hidden-scale', id);
