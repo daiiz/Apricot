@@ -12,14 +12,14 @@ window.addEventListener('apricot-click', function(e) {
   }
 
   if(a.CheckId(id, 'base5_6')) {
-    apricot.api.RemoveNonvisibleBrick('card_0');
+    //a.RemoveNonvisibleBrick('card_0');
     var new_id = a.CopyBrickInParts('base5_5', 'card_0');
     a.ToggleExpandBrick(new_id, "left top");
   }
 
   if(a.CheckId(id, 'card_0')) {
-    a.CloseExpandBrick(id, "right bottom");
-    //a.RemoveBrick(id);
+    //a.CloseExpandBrick(id, "right bottom");
+    a.CloseWidthBrick(id);
   }
 
   if(a.CheckId(id, 'base5_7')) {

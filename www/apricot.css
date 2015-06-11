@@ -36,3 +36,19 @@
   animation-duration: 0.4s;
   animation-fill-mode: forwards;
 }
+
+.element-hidden-width {
+  animation-name: closeWidthElement;
+  animation-timing-function: ease;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+  transform-origin: left center;
+}
+
+.element-hidden-height {
+  animation-name: closeHeightElement;
+  animation-timing-function: ease;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+  transform-origin: top center;
+}

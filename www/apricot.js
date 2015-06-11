@@ -32,7 +32,7 @@ apricot.api.CopyBrickInParts = function(parts_id, id) {
   child.style.left = "";
   child.style.position = "relative";
   var t = child.outerHTML;
-  //apricot.removeClass('element-hidden', child_id);
+  apricot.addClass('element-hidden', child_id);
   //apricot.removeClass('element-hidden-scale', child_id);
   //apricot.addClass('element-visible-scale', child_id);
   return child_id;
@@ -89,6 +89,14 @@ apricot.api.DuplicateBrick = function(id, p_id) {
 apricot.api.RemoveBrick = function(id) {
   var selfelem = apricot.querySelector('#', id);
   selfelem.parentNode.removeChild(selfelem);
+}
+
+apricot.api.CloseWidthBrick = function(id) {
+  apricot.addClass('element-hidden-width', id);
+}
+
+apricot.api.CloseHeightBrick = function(id) {
+  apricot.addClass('element-hidden-height', id);
 }
 
 /* 非表示状態になっているハイフン付きIDを持つブリックを消去
