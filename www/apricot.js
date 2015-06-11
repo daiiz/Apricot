@@ -16,6 +16,11 @@ apricot.api = apricot.API.v1;
  * 名前の先頭を大文字にする
  */
 
+/* ブリックのDOMを返す */
+apricot.api.Dom = function(id) {
+  return apricot.querySelector('#', id);
+}
+
 /* id判定 */
 apricot.api.CheckId = function(id_with_hyphen, id) {
   if(id_with_hyphen.split('-')[0] == id) return true;

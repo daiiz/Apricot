@@ -67,6 +67,7 @@ apricot.init.applyDesign = function(brick_design, tag) {
         default:
             break;
         case "Cardboard":
+            tag.style.overflow = "hidden";
             if(value == 'a') {
               tag.style.borderWidth = "1px";
               tag.style.borderStyle = "solid";

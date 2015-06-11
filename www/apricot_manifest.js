@@ -102,6 +102,8 @@ apricot.manifest = {
       "design": {
         "borderRadius": "2px",
         "Cardboard": "b",
+        "width": "220px",
+        "height": "220px",
         "Expandable": true,
         "Animation": "expand",
         "marginBottom": "10px",

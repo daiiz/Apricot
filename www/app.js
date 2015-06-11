@@ -12,8 +12,8 @@ window.addEventListener('apricot-click', function(e) {
   }
 
   if(a.CheckId(id, 'base5_6')) {
-    //a.RemoveNonvisibleBrick('card_0');
     var new_id = a.CopyBrickInParts('base5_5', 'card_0');
+    a.Dom(new_id).innerHTML = "<img src='apricot.png' class='xapricot' style='width: 50px'>";
     a.ToggleExpandBrick(new_id, "left top");
   }
 
