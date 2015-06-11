@@ -32,9 +32,9 @@ def createBasicTags(title):
       '<head>',
       '<meta charset="utf-8" />',
       '<link rel="stylesheet" href="apricot.css">',
+      '<link rel="stylesheet" href="apricot_animation.css">',
       '<title>{}</title>'.format(title),
       '<style>{}</style>'.format(sty),
-      '<script src="jquery-1.11.0.min.js"></script>',
       '</head>',
       '<body>'
     ]

@@ -32,11 +32,9 @@ apricot.api.CopyBrickInParts = function(parts_id, id) {
   child.style.left = "";
   child.style.position = "relative";
   var t = child.outerHTML;
-  apricot.removeClass('element-hidden', child_id);
-  apricot.removeClass('element-hidden-scale', child_id);
-  apricot.addClass('element-visible-scale', child_id);
-
-  //$("#" + parts_id).append(t);
+  //apricot.removeClass('element-hidden', child_id);
+  //apricot.removeClass('element-hidden-scale', child_id);
+  //apricot.addClass('element-visible-scale', child_id);
   return child_id;
 }
 
@@ -87,6 +85,28 @@ apricot.api.DuplicateBrick = function(id, p_id) {
   return new_id;
 }
 
+/* ブリックを除去 */
+apricot.api.RemoveBrick = function(id) {
+  var selfelem = apricot.querySelector('#', id);
+  selfelem.parentNode.removeChild(selfelem);
+}
+
+/* 非表示状態になっているハイフン付きIDを持つブリックを消去
+ * 引数はid_with_hyphenの先頭id
+ */
+apricot.api.RemoveNonvisibleBrick = function(id) {
+  var apricot_elems = document.querySelectorAll('.apricot');
+  for(var i = 0; i < apricot_elems.length; i++) {
+    var apricot_elem = apricot_elems[i];
+    var f0 = apricot_elem.id.search('-') != -1;
+    var f1 = apricot_elem.className.search('hidden') != -1;
+    var f2 = apricot.api.CheckId(apricot_elem.id, id);
+    if(f0 && f1 && f2) {
+      apricot.api.RemoveBrick(apricot_elem.id);
+    }
+  }
+}
+
 /* エイリアス */
 /* パーツの表示・非表示切り替え（アニメーションなし） */
 apricot.api.ShowParts = apricot.api.ShowBrick;
@@ -103,18 +123,15 @@ apricot.api.MovePartsTo = apricot.api.MoveBrickTo;
 
 apricot.api.OpenExpandBrick = function(id, origin) {
   apricot.setStyle([
-    //{"opacity": 1},
-    //{"transition": "transform 0.3s ease"},
     {"transform-origin": origin}
   ], id);
+  apricot.removeClass('element-hidden', id);
   apricot.removeClass('element-hidden-scale', id);
   apricot.addClass('element-visible-scale', id);
 };
 
 apricot.api.CloseExpandBrick = function(id, origin) {
   apricot.setStyle([
-    //{"opacity": 1},
-    //{"transition": "transform 0.3s ease"},
     {"transform-origin": origin}
   ], id);
   apricot.addClass('element-hidden-scale', id);

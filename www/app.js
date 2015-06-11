@@ -1,25 +1,28 @@
-// User test
+// User script
+// Apricotの最新APIセット
+var a = apricot.api;
 
 window.addEventListener('apricot-click', function(e) {
   var info = e.detail;
   console.log(info);
-  if(apricot.api.CheckId(info.brick.id, 'base5_1')) {
-    apricot.api.ToggleDrawerFromLeft('panel', '.5');
+  var id = info.brick.id;
+
+  if(a.CheckId(id, 'base5_1')) {
+    a.ToggleDrawerFromLeft('panel', '0.5');
   }
 
-  if(apricot.api.CheckId(info.brick.id, 'base5_6')) {
-    /*
-    var c = apricot.api.DuplicateBrick('base5_1');
-    apricot.api.ShowBrick(c);
-    apricot.api.MoveBrickTo(100, 100, c);
-    */
-    //apricot.api.MovePartsTo(150, 200, "card_0");
-    var new_id = apricot.api.CopyBrickInParts('base5_5', 'card_0');
-    //apricot.api.ToggleExpandBrick(new_id, "center center");
+  if(a.CheckId(id, 'base5_6')) {
+    apricot.api.RemoveNonvisibleBrick('card_0');
+    var new_id = a.CopyBrickInParts('base5_5', 'card_0');
+    a.ToggleExpandBrick(new_id, "left top");
   }
 
-  if(apricot.api.CheckId(info.brick.id, 'base5_7')) {
-    apricot.api.ToggleExpandBrick(document.getElementById("base5_5").getElementsByClassName('apricot')[0].id, "center center");
+  if(a.CheckId(id, 'card_0')) {
+    a.CloseExpandBrick(id, "right bottom");
+    //a.RemoveBrick(id);
+  }
+
+  if(a.CheckId(id, 'base5_7')) {
   }
 
 
