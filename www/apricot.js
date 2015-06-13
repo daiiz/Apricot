@@ -6,7 +6,7 @@
 var apricot = apricot || {};
 apricot.init = {};
 apricot.API = {};
-apricot.API.v1 = {"v": "1.0.1 beta"};
+apricot.API.v1 = {"v": "1.0.1 beta preview"};
 
 /* APIのデフォルトバージョンを指定 */
 apricot.api = apricot.API.v1;
@@ -21,14 +21,58 @@ apricot.api.Dom = function(id) {
   return apricot.querySelector('#', id);
 }
 
+/* ユーザー定義のDOMに対してApricot APIを有効化するための整形を行う */
+apricot.api.FormatDom = function(user_dom, event_root_id) {
+  var d = '';
+  apricot.querySelector('#', 'apricot_workspace').innerHTML = user_dom;
+  var obj = apricot.querySelector('#', 'apricot_workspace').firstChild;
+  // event-root-id を付与する
+  // イベント発火Idはこちらが優先される
+  if(event_root_id != null) {
+    obj.dataset.eventRootId = event_root_id;
+  }
+  // 後天的Apricot要素であることを示すクラス名を付与する
+  obj.className = 'xapricot ' + obj.className;
+
+  apricot.querySelector('#', 'apricot_workspace').innerHTML = '';
+  apricot.querySelector('#', 'apricot_workspace').appendChild(obj);
+  return apricot.querySelector('#', 'apricot_workspace').innerHTML;
+}
+
 /* id判定 */
-apricot.api.CheckId = function(id_with_hyphen, id) {
+apricot.api.IsId = function(id_with_hyphen, id) {
   if(id_with_hyphen.split('-')[0] == id) return true;
   return false;
 }
 
-/* */
-// 要素#idは非表示状態であることを仮定する
+/* Apricotオブジェクトにアニメーションキーフレームを適用する */
+apricot.api.ApplayAnimation = function(keyframe_name, animation_settings, transitions_settings, id) {
+  // アニメーション制御のデフォルト値
+  var default_animation_settings = [
+    {"animationTimingFunction": "ease"},
+    {"animationDuration": "0.4s"},
+    {"animationFillMode": "forwards"}
+  ];
+  // トランジション制御のデフォルト値
+  var default_transitions_settings = [
+    {"transformOrigin": "center center"}
+  ];
+  // デフォルトの制御スタイルを反映
+  apricot.setStyle(default_animation_settings, id);
+  apricot.setStyle(default_transitions_settings, id);
+  // ユーザー定義の制御スタイルを反映
+  if(animation_settings != null) apricot.setStyle(animation_settings, id);
+  if(transitions_settings != null) apricot.setStyle(transitions_settings, id);
+  // アニメーションを反映
+  apricot.removeClass('element-hidden', id);
+  apricot.setStyle([{"animationName": keyframe_name}], id);
+}
+
+
+/* #idのbrickをparts#parts_id内に非表示状態でコピー生成し、
+ * コピーされたbrickのidを返す。
+ * 要素#idは非表示状態であることを仮定する
+ */
 apricot.api.CopyBrickInParts = function(parts_id, id) {
   var child_id = apricot.api.DuplicateBrick(id, parts_id);
   var child = apricot.querySelector('#', child_id);
@@ -94,18 +138,10 @@ apricot.api.RemoveBrick = function(id) {
   selfelem.parentNode.removeChild(selfelem);
 }
 
-apricot.api.CloseWidthBrick = function(id) {
-  apricot.addClass('element-hidden-width', id);
-}
-
-apricot.api.CloseHeightBrick = function(id) {
-  apricot.addClass('element-hidden-height', id);
-}
-
 /* 非表示状態になっているハイフン付きIDを持つブリックを消去
  * 引数はid_with_hyphenの先頭id
  */
-apricot.api.RemoveNonvisibleBrick = function(id) {
+apricot.api.RemoveNonVisibleBrick = function(id) {
   var apricot_elems = document.querySelectorAll('.apricot');
   for(var i = 0; i < apricot_elems.length; i++) {
     var apricot_elem = apricot_elems[i];
@@ -125,39 +161,6 @@ apricot.api.HideParts = apricot.api.HideBrick;
 apricot.api.ToggleParts = apricot.api.ToggleBrick;
 /* パーツを指定した座標まで移動させる（アニメーションなし） */
 apricot.api.MovePartsTo = apricot.api.MoveBrickTo;
-
-
-////////////////////////////////////////////////////////////////////////////////
-/* エクスパンド */
-// origin: 水平方向l,c,r * 垂直方向t,c,b
-
-
-apricot.api.OpenExpandBrick = function(id, origin) {
-  apricot.setStyle([
-    {"transform-origin": origin}
-  ], id);
-  apricot.removeClass('element-hidden', id);
-  apricot.removeClass('element-hidden-scale', id);
-  apricot.addClass('element-visible-scale', id);
-};
-
-apricot.api.CloseExpandBrick = function(id, origin) {
-  apricot.setStyle([
-    {"transform-origin": origin}
-  ], id);
-  apricot.addClass('element-hidden-scale', id);
-  apricot.removeClass('element-visible-scale', id);
-};
-
-apricot.api.ToggleExpandBrick = function(id, origin) {
-  if(origin == null) origin = 'center center';
-  if(apricot.hasClass('element-hidden-scale', id)) {
-    apricot.api.OpenExpandBrick(id, origin);
-  }else {
-    apricot.api.CloseExpandBrick(id, origin);
-  }
-}
-
 
 ////////////////////////////////////////////////////////////////////////////////
 /* ドロワーパネル */
@@ -317,20 +320,24 @@ apricot.setEventsListeners = function() {
   for(var e = 0; e < events.length; e++) {
     // イベントを仕掛ける
     window.addEventListener(events[e], function(info) {
+      // Apricot Element Object は .apricot | .xapricot を有する
       if(info.target.className.search(apricot.C.cn) != -1) {
-        var en = 'apricot-' + info.type;
+        var event_name = 'apricot-' + info.type;
         // カスタムイベントを生成し、発火する
-        var ev = new CustomEvent(en, {
+        // 通常、発火元はidとなるが、要素がeventRootIdをもつ場合はこちらが優先される
+        // 後者の場合、hasEventRootId を true にすることによって伝達される。
+        var eri = info.target.dataset.eventRootId;
+        var id = info.target.id;
+        var has_eri = false;
+        if(eri != undefined && eri != '') {
+          id = eri;
+          has_eri = true;
+        }
+        var ev = new CustomEvent(event_name, {
           detail: {
-            brick: {
-              id: info.target.id
-            },
-            part: {
-              id: info.target.id.split('_')[0]
-            },
-            fired: {
-              event_name: en
-            }
+            brick: {id: id, hasEventRootId: has_eri},
+            part: {id: info.target.id.split('_')[0]},
+            fired: {event_name: event_name}
           }
         });
         window.dispatchEvent(ev);
@@ -340,15 +347,21 @@ apricot.setEventsListeners = function() {
   return 0;
 };
 
-//////// 初回起動時デザイン初期化 ////////
-apricot.buidInitUI = function(manifest) {
-
+//////// Apricot Ready. ////////
+apricot.fireInitEvent = function() {
+  var ev = new CustomEvent("apricot-load", {
+    detail: {
+      brick: {id: null, hasEventRootId: false},
+      part: {id: null},
+      fired: {event_name: "apricot-load"}
+    }
+  });
+  window.dispatchEvent(ev);
 }
 
-
-//////// Apricot Ready. ////////
 window.addEventListener('load', function(e) {
   apricot.log("Apricot is ready.");
   apricot.setEventsListeners();
   apricot.init.buidUI(apricot.manifest);
+  apricot.fireInitEvent();
 }, false);

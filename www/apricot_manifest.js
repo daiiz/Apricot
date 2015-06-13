@@ -101,11 +101,9 @@ apricot.manifest = {
     "brick_0": {
       "design": {
         "borderRadius": "2px",
-        "Cardboard": "b",
+        "Cardboard": "c",
         "width": "220px",
         "height": "220px",
-        "Expandable": true,
-        "Animation": "expand",
         "marginBottom": "10px",
         "marginRight": "5px",
         "marginLeft": "5px"

@@ -69,12 +69,14 @@ apricot.init.applyDesign = function(brick_design, tag) {
         case "Cardboard":
             tag.style.overflow = "hidden";
             if(value == 'a') {
+            }
+            else if(value == 'b') {
               tag.style.borderWidth = "1px";
               tag.style.borderStyle = "solid";
               tag.style.borderColor = "#d8d8d8";
               tag.style.borderBottomWidth = "2px";
               tag.style.borderTopWidth = 0;
-            }else if(value == 'b') {
+            }else if(value == 'c') {
               tag.style.boxShadow =  "0px 1px 1px #BBB4A5";
               tag.style.borderTopWidth =  0;
             }
@@ -85,6 +87,7 @@ apricot.init.applyDesign = function(brick_design, tag) {
   return tag;
 }
 
+//////// 初回起動時デザイン初期化 ////////
 apricot.init.buidUI = function(manifest) {
   // パーツを把握
   var parts = Object.keys(manifest);
