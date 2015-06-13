@@ -65,6 +65,7 @@ apricot.manifest = {
         "backgroundColor": "#e9e7e4",
         "overflow-y": "scroll",
         "padding": "10px",
+        "Height": "+20px",
         "boxSizing": "border-box",
         "display": "flex",
         "flex-wrap": "wrap",
@@ -80,7 +81,9 @@ apricot.manifest = {
         "Content": "Hello,Apricot!",
         "width": "auto",
         "height": "auto",
-        "backgroundColor": ""
+        "backgroundColor": "",
+        "top": "115px",
+        "left": "150px"
       }
     },
 
@@ -113,12 +116,11 @@ apricot.manifest = {
     "brick_0": {
       "design": {
         "borderRadius": "2px",
+        "width": "100%",
         "Cardboard": "c",
-        "width": "220px",
-        "height": "220px",
-        "marginBottom": "10px",
-        "marginRight": "5px",
-        "marginLeft": "5px"
+        "height": "60px",
+        "margin-bottom": "10px",
+        "boxSizing": "border-box"
       }
     }
   }
