@@ -26,6 +26,8 @@ def createBasicTags(title):
     tags = {"before": [], "after": []}
     # 基本CSSスタイル
     sty = '.apricot{} body{}'.format('{position: absolute; outline: none;-webkit-user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0)}', '{margin: 0 0 0 0;}')
+    # Apricot Manifest ファイル名
+    apricot_manifest_js = sys.argv[1] + '_manifest.js'
     tags["before"] = [
       '<!doctype html>',
       '<html>',
@@ -48,7 +50,7 @@ def createBasicTags(title):
       '<script src="stj/apricot.js"></script>',
       '<script src="stj/apricot_init.js"></script>',
       '<script src="app.js"></script>',
-      '<script src="apricot_manifest.js"></script>'
+      '<script src="{}"></script>'.format(apricot_manifest_js),
       '</body>',
       '</html>'
     ]
