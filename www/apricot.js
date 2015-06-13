@@ -6,7 +6,7 @@
 var apricot = apricot || {};
 apricot.init = {};
 apricot.API = {};
-apricot.API.v1 = {};
+apricot.API.v1 = {"v": "1.0.1 beta"};
 
 /* APIのデフォルトバージョンを指定 */
 apricot.api = apricot.API.v1;
@@ -38,8 +38,6 @@ apricot.api.CopyBrickInParts = function(parts_id, id) {
   child.style.position = "relative";
   var t = child.outerHTML;
   apricot.addClass('element-hidden', child_id);
-  //apricot.removeClass('element-hidden-scale', child_id);
-  //apricot.addClass('element-visible-scale', child_id);
   return child_id;
 }
 

@@ -1,6 +1,6 @@
 // User script
-// Apricotの最新APIセット
-var a = apricot.api;
+
+var a = apricot.api; // Apricotの最新APIセット
 
 window.addEventListener('apricot-click', function(e) {
   var info = e.detail;

@@ -1,3 +1,7 @@
+/**
+ * Aricot default animations
+ */
+
 @keyframes scaleShow {
   0% {
     transform: scale(0);
