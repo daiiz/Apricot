@@ -349,7 +349,7 @@ apricot.setEventsListeners = function() {
 
 //////// Apricot Ready. ////////
 apricot.fireInitEvent = function() {
-  var ev = new CustomEvent("apricot-load", {
+  var ev = new CustomEvent("apricot-ready", {
     detail: {
       brick: {id: null, hasEventRootId: false},
       part: {id: null},

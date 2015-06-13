@@ -2,7 +2,7 @@
 
 var a = apricot.api; // Apricotの最新APIセット
 
-window.addEventListener('apricot-load', function(e) {
+window.addEventListener('apricot-ready', function(e) {
   var new_id = a.CopyBrickInParts('base5_5', 'card_0');
   a.ApplayAnimation("scaleShow", null, null, new_id);
 }, false);
