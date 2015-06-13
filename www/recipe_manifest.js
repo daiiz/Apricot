@@ -22,19 +22,6 @@ apricot.manifest = {
       }
     },
 
-    "brick_4": {
-      "role": "html-input",
-      "property": {
-        "placeholder": "ここに入力"
-      },
-      "design": {
-        "backgroundColor": "#fff",
-        "left": "10px",
-        "height": "auto",
-        "Visible": true,
-      }
-    },
-
     "brick_2": {
       "role": "html-div",
       "property": {},
@@ -48,6 +35,25 @@ apricot.manifest = {
         "Content": "Apricot Brick",
         "Top": "+8px",
         "FontScale": "L"
+      }
+    },
+
+    "brick_3": {
+      "design": {
+        "FullWidth": true
+      }
+    },
+
+    "brick_4": {
+      "role": "html-input",
+      "property": {
+        "placeholder": "ここに入力"
+      },
+      "design": {
+        "backgroundColor": "#fff",
+        "left": "10px",
+        "height": "auto",
+        "Visible": true,
       }
     },
 
@@ -84,7 +90,10 @@ apricot.manifest = {
       },
       "design": {
         "backgroundColor": "#FFC107",
-        "FullWidth": true
+        "FullWidth": true,
+        "position": "fixed",
+        "top": "",
+        "bottom": "0px"
       }
     }
   },
