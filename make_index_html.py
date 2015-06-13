@@ -34,8 +34,9 @@ def createBasicTags(title):
       '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">',
       '<meta name="mobile-web-app-capable" content="yes">',
       '<meta name="apple-mobile-web-app-capable" content="yes">',
-      '<link rel="stylesheet" href="apricot.css">',
-      '<link rel="stylesheet" href="apricot_animation.css">',
+      '<link rel="stylesheet" href="stj/apricot.css">',
+      '<link rel="stylesheet" href="stj/apricot_animation.css">',
+      '<link rel="stylesheet" href="app.css">',
       '<title>{}</title>'.format(title),
       '<style>{}</style>'.format(sty),
       '</head>',
@@ -44,8 +45,8 @@ def createBasicTags(title):
     tags['after'] = [
       '<div id="apricot_workspace"></div>',
       '<script src="cordova.js"></script>',
-      '<script src="apricot.js"></script>',
-      '<script src="apricot_init.js"></script>',
+      '<script src="stj/apricot.js"></script>',
+      '<script src="stj/apricot_init.js"></script>',
       '<script src="app.js"></script>',
       '<script src="apricot_manifest.js"></script>'
       '</body>',

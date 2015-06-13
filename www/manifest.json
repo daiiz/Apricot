@@ -9,9 +9,9 @@
     }
   },
   "icons": {
-    "48":  "apricot_icon.png",
-    "16":  "apricot_icon.png",
-    "128": "apricot_icon.png"
+    "48":  "stj/apricot_icon.png",
+    "16":  "stj/apricot_icon.png",
+    "128": "stj/apricot_icon.png"
   },
   "permissions": ["storage", "unlimitedStorage", "<all_urls>", "webview"]
 }
