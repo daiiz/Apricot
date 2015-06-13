@@ -42,9 +42,10 @@ apricot.init.applyDesign = function(brick_design, tag) {
               tag.style.left = apricot.toPx(left);
             }
             break;
-        case "Width":
-            var rate = +(value.split('%')[0]) / 100;
-            tag.style.width = apricot.toPx(window.innerWidth * rate);
+        case "FullWidth":
+            if(value == true) {
+              tag.style.width = apricot.toPx(window.innerWidth * 1);
+            }
             break;
         case "ShadowLevel":
             if(value == 0) {

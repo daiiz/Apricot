@@ -31,6 +31,9 @@ def createBasicTags(title):
       '<html>',
       '<head>',
       '<meta charset="utf-8" />',
+      '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">',
+      '<meta name="mobile-web-app-capable" content="yes">',
+      '<meta name="apple-mobile-web-app-capable" content="yes">',
       '<link rel="stylesheet" href="apricot.css">',
       '<link rel="stylesheet" href="apricot_animation.css">',
       '<title>{}</title>'.format(title),
@@ -43,7 +46,6 @@ def createBasicTags(title):
       '<script src="apricot.js"></script>',
       '<script src="apricot_init.js"></script>',
       '<script src="app.js"></script>',
-      '<script src="Html.js"></script>',
       '<script src="apricot_manifest.js"></script>'
       '</body>',
       '</html>'
@@ -65,12 +67,16 @@ if __name__ == '__main__':
     for part in targets:
         # 表示／非表示情報
         display_class = 'element-hidden'
-        # TODO: jsと一本化
         if part[-1] == '*':
             display_class = 'element-visible'
             part = part[:-1].strip()
+        # 画面横幅限界まで拡張して表示するかの情報
+        display_width_expand = ''
+        #if part[0] == '_':
+        #    display_width_expand = 'width-expand'
+        #    part = part[1:].strip()
         f = open('tmp/{}.div'.format(part), 'r')
-        htmldoc += '\n<div id="{}" class="apricot {}">'.format(part, display_class)
+        htmldoc += '\n<div id="{}" class="apricot {} {}">'.format(part, display_class, display_width_expand)
         htmldoc += f.read()
         htmldoc += '\n</div>'
         f.close()

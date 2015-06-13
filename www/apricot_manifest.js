@@ -7,7 +7,7 @@ apricot.manifest = {
         "ShadowLevel": 3,
         "zIndex": 10,
         "backgroundColor": "#3F51B5",
-        "Width": "100%"  // 名称要検討; base5自身に適用できないか
+        "FullWidth": true
       }
     },
 
@@ -61,7 +61,8 @@ apricot.manifest = {
         "padding": "10px",
         "boxSizing": "border-box",
         "display": "flex",
-        "flex-wrap": "wrap"
+        "flex-wrap": "wrap",
+        "FullWidth": true
       }
     },
 
@@ -82,7 +83,8 @@ apricot.manifest = {
         "src": "gudebook.jpg"
       },
       "design": {
-        "backgroundColor": "#FFC107"
+        "backgroundColor": "#FFC107",
+        "FullWidth": true
       }
     }
   },

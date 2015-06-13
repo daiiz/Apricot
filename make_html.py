@@ -40,17 +40,6 @@ def getPropValue(stj, prop):
         res = ''
     return res
 
-# px値を返す
-def getPxValue(base, diff):
-    # base、diffから'px'を除去する
-    base = str(base).replace('px', '').strip()
-    diff = str(diff).replace('px', '').strip()
-    # diff[0]が符号であれば、baseにdiff加算した値を採用する
-    # diffが符号なしの場合は、diffの値を採用する
-    if diff[0] == '+' or diff[0] == '-':
-        diff = int(base) + int(diff)
-    return str(diff) + 'px'
-
 def getTag(name, kvs, endtag):
     # kvs: {"keyv": {"id":2, "value":2}, "inner": 2}
     tag = ''
