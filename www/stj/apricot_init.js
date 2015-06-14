@@ -11,11 +11,6 @@ apricot.init.applyDesign = function(brick_design, tag) {
       // Apricotの個別対応スタイル
       var v = '';
       switch (key) {
-        case "Expandable":
-           if(value == true) {
-             tag.className = "apricot element-hidden-scale";
-           }
-           break;
         case "Visible":
             v = (value == true) ? "visible" : "hidden";
             tag.style.visibility = v;
@@ -45,6 +40,20 @@ apricot.init.applyDesign = function(brick_design, tag) {
         case "FullWidth":
             if(value == true) {
               tag.style.width = apricot.toPx(window.innerWidth * 1);
+            }
+            break;
+        case "Src":
+            if(apricot.isChromeApp) {
+              var xhr = new XMLHttpRequest();
+              xhr.open('GET', value, true);
+              xhr.responseType = 'blob';
+              xhr.onload = function(e) {
+                var blob_url = window.URL.createObjectURL(this.response);
+                tag.src = blob_url;
+              }
+              xhr.send();
+            }else {
+              tag.src = value;
             }
             break;
         case "ShadowLevel":
@@ -129,14 +138,16 @@ apricot.init.buidUI = function(manifest) {
       tag.title = apricot.querySelector('#', id).title;
       // classを設定する
       tag.className = apricot.querySelector('#', id).className;
-      // CSS Styles 及び Apricot Design を適用する
-      tag = apricot.init.applyDesign((brick.design || {}), tag);
       // タグを描画する
       apricot.querySelector('#', 'apricot_workspace').innerHTML = '';
       apricot.querySelector('#', 'apricot_workspace').appendChild(tag);
       tag = apricot.querySelector('#', 'apricot_workspace').innerHTML;
       apricot.querySelector('#', id).outerHTML = tag;
       apricot.querySelector('#', id_init).id = id;
+      tag = apricot.querySelector('#', id);
+      // CSS Styles 及び Apricot Design を適用する
+      tag = apricot.init.applyDesign((brick.design || {}), tag);
+
     }
 
   }

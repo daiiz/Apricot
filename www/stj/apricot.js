@@ -6,15 +6,19 @@
 var apricot = apricot || {};
 apricot.init = {};
 apricot.API = {};
-apricot.API.v1 = {"v": "1.0.1 beta preview"};
+apricot.API.v0 = {"v": "0.0.4 developer preview"};
 
 /* APIのデフォルトバージョンを指定 */
-apricot.api = apricot.API.v1;
+apricot.api = apricot.API.v0;
 
 /**
  * ユーザーが呼び出し可能なAPIは
  * 名前の先頭を大文字にする
  */
+
+/* 便利なイディオム */
+apricot.api.Idioms = {
+}
 
 /* ブリックのDOMを返す */
 apricot.api.Dom = function(id) {
@@ -210,6 +214,52 @@ apricot.api.ToggleDrawerFromLeft = function(id, sec) {
   }
 }
 
+/* 画像のプリロード
+ * 完了すると`apricot-imgs-ready`が発火する
+ */
+apricot.preloaded_imags_blobsrcs = {};  // {preload_name: []}
+apricot.preloadImg = function(preload_name, arr_src) {
+  // 再帰的に呼ばれる
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', arr_src[0], true);
+  xhr.responseType = 'blob';
+  xhr.onload = function(e) {
+    var blob_url = window.URL.createObjectURL(this.response);
+    var preImgArea = apricot.querySelector('#', 'apricot_workspace_preimg').firstChild;
+    preImgArea.src = blob_url;
+    preImgArea.onload = function() {
+      var b = {
+        "blob": blob_url,
+        "width": preImgArea.width,
+        "height": preImgArea.height
+      }
+      apricot.preloaded_imags_blobsrcs[preload_name].push(b);
+      // arr_srcの先頭の要素を除去
+      arr_src.shift();
+      if(arr_src.length > 0) {
+        apricot.preloadImg(preload_name, arr_src);
+      }else {
+        // すべての画像のプリロード完了
+        var event_name = "apricot-preloadImgs-ready"
+        var ev = new CustomEvent(event_name, {
+          detail: {
+            blobs: apricot.preloaded_imags_blobsrcs,
+            preloadName: preload_name,
+            fired: {event_name: event_name}
+          }
+        });
+        window.dispatchEvent(ev);
+      }
+    }
+  }
+  xhr.send();
+}
+apricot.api.PreloadImgs = function(preload_name, arr_src) {
+  var imgbox = apricot.preloaded_imags_blobsrcs;
+  imgbox[preload_name] = [];
+  apricot.preloadImg(preload_name, arr_src);
+}
+
 // TODO: transitionを解除するメソッド
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -307,6 +357,13 @@ apricot.toPx = function(v) {
 apricot.toNum = function(v) {
   v = '' + v;
   return +(v.replace(/px/gi, ''));
+}
+
+apricot.isChromeApp = function() {
+  if(window.chrome != undefined && window.chrome.app.window != undefined) {
+    return true;
+  }
+  return false;
 }
 
 //////// Apricot Logger ////////

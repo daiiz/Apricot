@@ -8,7 +8,7 @@
    pointer-events: none;
 }
 
-#apricot_workspace {
+#apricot_workspace, #apricot_workspace_preimg {
   display: none;
 }
 

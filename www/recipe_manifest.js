@@ -14,11 +14,11 @@ apricot.manifest = {
     "brick_1": {
       "role": "html-img",
       "property": {
-        "src": "apricot.png"
       },
       "design": {
         "zIndex": 11,
-        "cursor": "pointer"
+        "cursor": "pointer",
+        "Src": "apricot.png"
       }
     },
 
