@@ -4,7 +4,6 @@ apricot.manifest = {
 
     "brick_0": {
       "design": {
-        "ShadowLevel": 3,
         "zIndex": 10,
         "backgroundColor": "#3F51B5",
         "FullWidth": true
@@ -103,7 +102,7 @@ apricot.manifest = {
   "panel": {
     "brick_1": {
       "design": {
-        "backgroundColor": "#e5e5e5"
+        "backgroundColor": "#5B8DE5"
       }
     }
   },

@@ -35,6 +35,11 @@ window.addEventListener('apricot-click', function(e) {
   }
 
   if(a.IsId(id, 'base5_7')) {
+    // 画像のプリロード
+    a.PreloadImgs('init', [
+      "pie.jpg",
+      "waffle.jpg"
+    ]);
   }
 
 }, false);

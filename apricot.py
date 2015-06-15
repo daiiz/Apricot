@@ -36,7 +36,7 @@ if __name__ == '__main__':
     for target in targets:
         if target[-1] == '*': target = target[:-1].strip()
 
-        exeCommand('./build {}'.format(target))
+        exeCommand('sh build.sh {}'.format(target))
 
     # レシピファイルに基いて、パーツファイルを実行ファイル（index.html）に統合する
     exeCommand('python make_index_html.py {} > {}/index.html'.format(recipefilename, DIR_WWW))
