@@ -7,6 +7,7 @@
 import sys
 import os.path
 import commands
+from PIL import Image
 
 DIR_ORIGINAL = 'original'
 DIR_WWW ='www'
@@ -24,6 +25,14 @@ def loadRecipeFile(recipefile):
 def exeCommand(command_str):
     commands.getoutput(command_str)
 
+def get_img_wh(path):
+    img = Image.open(path)
+    imgInfo = {
+      "size_h": img.size[1],
+      "size_w": img.size[0],
+    }
+    return imgInfo
+
 if __name__ == '__main__':
     # レシピファイルの名前
     recipefilename = sys.argv[1]
@@ -34,8 +43,21 @@ if __name__ == '__main__':
 
     # パーツファイル（divファイル）を生成する
     for target in targets:
-        if target[-1] == '*': target = target[:-1].strip()
-
+        if target[-1] == '*':
+            target = target[:-1].strip()
+            img_wh = get_img_wh("{}/{}.png".format(DIR_ORIGINAL, target))
+            # background.js のウィンドウサイズ部分を上書きする
+            f = open('{}/background.js'.format(DIR_WWW), 'r')
+            new_file = ""
+            bg_window_size = "/**/  width: {}, maxWidth: {}, height: {}, maxHeight: {}, /* by Apricot */\n"
+            for line in f:
+                if line[0] == '/':
+                    line = bg_window_size.format(img_wh["size_w"], img_wh["size_w"], img_wh["size_h"], img_wh["size_h"])
+                new_file += line
+            f.close();
+            f = open('{}/background.js'.format(DIR_WWW), 'w')
+            f.write(new_file)
+            f.close()
         exeCommand('sh build.sh {}'.format(target))
 
     # レシピファイルに基いて、パーツファイルを実行ファイル（index.html）に統合する

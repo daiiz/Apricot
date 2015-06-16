@@ -100,6 +100,7 @@ apricot.init.applyDesign = function(brick_design, tag) {
 //////// 初回起動時デザイン初期化 ////////
 apricot.init.buidUI = function(manifest) {
   // パーツを把握
+  if(manifest == null) manifest = {};
   var parts = Object.keys(manifest);
 
   // パーツを1つずつ解析
