@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Project Apricot
-# Copyright (c) 2015 Daiki, Takanori.
+# Copyright (c) 2015 daiz.
 
 import sys
 import os.path

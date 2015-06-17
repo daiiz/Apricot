@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Project Apricot
-# Copyright (c) 2015 daiz, mathharachan, risingsun_33178.
+# Copyright (c) 2015 daiz.
 
 import sys
 
