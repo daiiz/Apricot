@@ -61,7 +61,9 @@ if __name__ == '__main__':
         exeCommand('sh build.sh {}'.format(target))
 
     # レシピファイルに基いて、パーツファイルを実行ファイル（index.html）に統合する
-    exeCommand('python make_index_html.py {} > {}/index.html'.format(recipefilename, DIR_WWW))
+    # ユーザーJSスクリプトのファイル名も渡す
+    user_js_finename =  sys.argv[2] or "#"
+    exeCommand('python make_index_html.py {} {} > {}/index.html'.format(recipefilename, user_js_finename, DIR_WWW))
 
     # Chrome アプリを起動する(for mac)
     # exeCommand('python lib/launch_chrome_app.py run {}'.format(DIR_WWW))

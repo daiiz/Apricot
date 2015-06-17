@@ -44,13 +44,15 @@ def createBasicTags(title):
       '</head>',
       '<body>'
     ]
+    # ユーザーJSスクリプトのファイル名
+    user_js_finename = sys.argv[2]
     tags['after'] = [
       '<div id="apricot_workspace"></div>',
       '<div id="apricot_workspace_preimg"><img src="#"></div>',
       '<script src="cordova.js"></script>',
       '<script src="stj/apricot.js"></script>',
       '<script src="stj/apricot_init.js"></script>',
-      '<script src="app.js"></script>',
+      '<script src="{}"></script>'.format(user_js_finename),
       '<script src="{}"></script>'.format(apricot_manifest_js),
       '</body>',
       '</html>'
