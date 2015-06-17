@@ -46,7 +46,7 @@ apricot.manifest = {
     "brick_4": {
       "role": "html-input",
       "property": {
-        "placeholder": "ここに入力"
+        "placeholder": "サンプル"
       },
       "design": {
         "backgroundColor": "#fff",
@@ -63,7 +63,8 @@ apricot.manifest = {
         "ShadowLevel": 0,
         "backgroundColor": "#e9e7e4",
         "overflow-y": "scroll",
-        "padding": "10px",
+        "padding-top": "10px",
+        "padding-bottom": "10px",
         "boxSizing": "border-box",
         "display": "flex",
         "flex-wrap": "wrap",
@@ -113,8 +114,6 @@ apricot.manifest = {
       "design": {
         "borderRadius": "2px",
         "Cardboard": "c",
-        "width": "220px",
-        "height": "220px",
         "marginBottom": "10px",
         "marginRight": "5px",
         "marginLeft": "5px"

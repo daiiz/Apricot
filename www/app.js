@@ -2,15 +2,25 @@
 
 var a = apricot.api; // Apricotの最新APIセット
 
+function setCardStyle() {
+  var stage_width = a.Dom('base5_5').clientWidth;  // スクロールバーを含まない領域幅
+  var sty = a.GetFlexibleWidth(2, [5, 5], stage_width, 200, 300);
+  a.Dom('card_0').style.width = sty[0] + "px";
+  a.Dom('card_0').style.height = sty[0] + "px";
+  a.Dom('card_0').style.marginLeft = sty[1] + "px";
+  a.Dom('card_0').style.marginRight = sty[2] + "px";
+  a.Dom('base5_5').style.paddingLeft = sty[1] + "px";
+}
+
 window.addEventListener('apricot-ready', function(e) {
+  setCardStyle();
   var new_id = a.CopyBrickInParts('base5_5', 'card_0');
   a.Dom(new_id).innerHTML = a.FormatDom("<div style='padding-top:72px'><center><h1>Hello, Apricot!</h1></center></div>", new_id);
   a.ApplayAnimation("scaleShow", null, null, new_id);
 
   // 画像のプリロード
   a.PreloadImgs('init', [
-    "pie.jpg",
-    "waffle.jpg"
+    "pie.jpg"
   ]);
 
 }, false);
@@ -38,7 +48,8 @@ window.addEventListener('apricot-click', function(e) {
     // 画像のプリロード
     a.PreloadImgs('init', [
       "pie.jpg",
-      "waffle.jpg"
+      "waffle.jpg",
+      "bread.jpg"
     ]);
   }
 
