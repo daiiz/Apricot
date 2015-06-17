@@ -1,6 +1,6 @@
 apricot.manifest = {
-  /* base5.png */
-  "base5": {
+  /* base.png */
+  "base": {
 
     "brick_0": {
       "design": {
@@ -116,7 +116,8 @@ apricot.manifest = {
         "Cardboard": "c",
         "marginBottom": "10px",
         "marginRight": "5px",
-        "marginLeft": "5px"
+        "marginLeft": "5px",
+        "backgroundColor": "#fff"
       }
     }
   }
