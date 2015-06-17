@@ -62,7 +62,7 @@ if __name__ == '__main__':
 
     # レシピファイルに基いて、パーツファイルを実行ファイル（index.html）に統合する
     # ユーザーJSスクリプトのファイル名も渡す
-    user_js_finename =  sys.argv[2] or "#"
+    user_js_finename =  sys.argv[2] or "user_app_script"
     exeCommand('python make_index_html.py {} {} > {}/index.html'.format(recipefilename, user_js_finename, DIR_WWW))
 
     # Chrome アプリを起動する(for mac)

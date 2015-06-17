@@ -28,6 +28,9 @@ def createBasicTags(title):
     sty = '.apricot{} body{}'.format('{position: absolute; outline: none;-webkit-user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0)}', '{margin: 0 0 0 0;}')
     # Apricot Manifest ファイル名
     apricot_manifest_js = sys.argv[1] + '_manifest.js'
+    # ユーザーJSスクリプト・CSSのファイル名
+    user_script_finename = sys.argv[2]
+
     tags["before"] = [
       '<!doctype html>',
       '<html>',
@@ -38,21 +41,20 @@ def createBasicTags(title):
       '<meta name="apple-mobile-web-app-capable" content="yes">',
       '<link rel="stylesheet" href="stj/apricot.css">',
       '<link rel="stylesheet" href="stj/apricot_animation.css">',
-      '<link rel="stylesheet" href="app.css">',
+      '<link rel="stylesheet" href="{}.css">'.format(user_script_finename),
       '<title>{}</title>'.format(title),
       '<style>{}</style>'.format(sty),
       '</head>',
       '<body>'
     ]
-    # ユーザーJSスクリプトのファイル名
-    user_js_finename = sys.argv[2]
+
     tags['after'] = [
       '<div id="apricot_workspace"></div>',
       '<div id="apricot_workspace_preimg"><img src="#"></div>',
       '<script src="cordova.js"></script>',
       '<script src="stj/apricot.js"></script>',
       '<script src="stj/apricot_init.js"></script>',
-      '<script src="{}"></script>'.format(user_js_finename),
+      '<script src="{}.js"></script>'.format(user_script_finename),
       '<script src="{}"></script>'.format(apricot_manifest_js),
       '</body>',
       '</html>'
