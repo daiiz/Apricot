@@ -6,7 +6,9 @@
 var apricot = apricot || {};
 apricot.init = {};
 apricot.API = {};
-apricot.API.v0 = {"v": "0.0.4 developer preview"};
+apricot.API.v0 = {"v": "0.0.5 developer preview"};
+apricot.API.v0.Tools = {};
+
 
 /* APIのデフォルトバージョンを指定 */
 apricot.api = apricot.API.v0;
@@ -15,6 +17,15 @@ apricot.api = apricot.API.v0;
  * ユーザーが呼び出し可能なAPIは
  * 名前の先頭を大文字にする
  */
+
+/* ツール */
+apricot.api.Tools.ToNum = function(x) {
+  return apricot.toNum(x);
+}
+
+apricot.api.Tools.ToPx = function(x) {
+  return apricot.toPx(x);
+}
 
 /* 便利なイディオム */
 apricot.api.Idioms = {
@@ -468,6 +479,18 @@ apricot.setEventsListeners = function() {
   return 0;
 };
 
+apricot.setScrollEventListener = function() {
+  window.addEventListener('scroll', function(e) {
+    var ev = new CustomEvent("apricot-scroll", {
+      detail: {
+        x: window.scrollX,
+        y: window.scrollY
+      }
+    });
+    window.dispatchEvent(ev);
+  }, false);
+}
+
 //////// Apricot Ready. ////////
 apricot.fireInitEvent = function() {
   var ev = new CustomEvent("apricot-ready", {
@@ -483,6 +506,7 @@ apricot.fireInitEvent = function() {
 window.addEventListener('load', function(e) {
   apricot.log("Apricot is ready.");
   apricot.setEventsListeners();
+  apricot.setScrollEventListener();
   apricot.init.buidUI(apricot.manifest);
   apricot.fireInitEvent();
 }, false);

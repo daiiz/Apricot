@@ -1,0 +1,9 @@
+html {
+  overflow-y: auto;
+}
+
+#scrollHeaderPanel_0 {
+  background-image: url("waffle.jpg");
+  background-size: cover;
+  background-position: center center;
+}
