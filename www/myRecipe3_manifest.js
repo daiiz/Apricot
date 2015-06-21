@@ -3,7 +3,8 @@ apricot.manifest = {
     "brick_0": {
       "design": {
         "height": "192px",
-        "backgroundImage": "url(breakfast.jpg)"
+        "backgroundImage": "url(breakfast.jpg)",
+        "FullWidth": true
       }
     },
 
@@ -34,7 +35,8 @@ apricot.manifest = {
         "color": "rgb(234, 223, 198)",
         "fontFamily": "roboto",
         "height": "64px",
-        "Top": "-42px"
+        "Top": "-42px",
+        "FullWidth": true
       }
     },
 
@@ -44,7 +46,8 @@ apricot.manifest = {
         "box-sizing": "border-box",
         "Top": (-42-21)+"px",
         "background": "#e9e7e4",
-        "padding-left": "20px"
+        "padding-left": "20px",
+        "FullWidth": true
       }
     }
   },

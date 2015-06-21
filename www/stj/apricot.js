@@ -373,11 +373,13 @@ apricot.observeScrollHeaderPanel = function(e) {
       a.Dom(headerId).style.position = "fixed";
       a.Dom(toolbarId).style.backgroundColor = "rgba(0,0,0,0)";
       a.Dom(apricot.C.shp.copiedHeaderImgId).style.opacity = e.detail.y / imgHeight;
+      a.Designs.ShadowLevel(a.Dom(toolbarId), 0);
     }else if(scrolled_y <= scrolled_y + toolbarHeight) {
       a.Dom(toolbarId).style.top = 0 + 'px';
       a.Dom(toolbarId).style.position = "fixed";
       a.Dom(toolbarId).style.backgroundColor = a.Dom(headerId).style.backgroundColor;
       a.Dom(apricot.C.shp.copiedHeaderImgId).style.opacity = '1.0';
+      a.Designs.ShadowLevel(a.Dom(toolbarId), 2);
     }
   }else if(type == 'b') {
     var imgHeight = a.Tools.ToNum(a.Dom(headerId).style.height);
