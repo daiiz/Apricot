@@ -387,9 +387,11 @@ apricot.observeScrollHeaderPanel = function(e) {
       a.Dom(toolbarId).style.position = "absolute";
       a.Dom(toolbarId).style.top = imgHeight + 'px';
       a.Dom(headerId).style.position = "fixed";
+      a.Designs.ShadowLevel(a.Dom(toolbarId), 0);
     }else if(scrolled_y <= scrolled_y + toolbarHeight) {
       a.Dom(toolbarId).style.top = 0 + 'px';
       a.Dom(toolbarId).style.position = "fixed";
+      a.Designs.ShadowLevel(a.Dom(toolbarId), 2);
     }
   }
 }
