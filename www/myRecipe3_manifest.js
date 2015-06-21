@@ -8,6 +8,9 @@ apricot.manifest = {
     },
 
     "brick_1": {
+      "property" :{
+        "title": "アニメーションタイプを切り替える"
+      },
       "design": {
         "position": "fixed",
         "backgroundColor": "rgba(0,0,0,0)",

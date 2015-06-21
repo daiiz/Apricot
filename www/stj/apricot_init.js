@@ -85,7 +85,9 @@ apricot.init.buidUI = function(manifest) {
       // top, left を継承する
       tag.style.top = apricot.querySelector('#', id).style.top;
       tag.style.left = apricot.querySelector('#', id).style.left;
-      tag.title = apricot.querySelector('#', id).title;
+      if(tag.title == undefined) {
+        tag.title = apricot.querySelector('#', id).title;
+      }
       // classを設定する
       tag.className = apricot.querySelector('#', id).className;
       // タグを描画する
