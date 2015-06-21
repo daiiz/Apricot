@@ -7,11 +7,18 @@ var apricot = apricot || {};
 apricot.init = {};
 apricot.API = {};
 apricot.API.v0 = {"v": "0.0.5 developer preview"};
-apricot.API.v0.Tools = {};
 
+apricot.API.v0.Tools = {};
+apricot.API.v0.Designs = {};
+apricot.API.v0.Behavior = {};
 
 /* APIのデフォルトバージョンを指定 */
 apricot.api = apricot.API.v0;
+
+//////// Apricot 定数 ////////
+apricot.C = {
+  "cn": "apricot"
+};
 
 /**
  * ユーザーが呼び出し可能なAPIは
@@ -22,11 +29,94 @@ apricot.api = apricot.API.v0;
 apricot.api.Tools.ToNum = function(x) {
   return apricot.toNum(x);
 }
-
 apricot.api.Tools.ToPx = function(x) {
   return apricot.toPx(x);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/* manifestのDesignの動作定義 */
+apricot.api.Designs.Top = function(tag, value) {
+  if(value[0] == '+' || value[0] == '-') {
+    var top = apricot.toNum(value);
+    var top = apricot.toNum(tag.style.top) + top;
+    tag.style.top = apricot.toPx(top);
+  }
+}
+apricot.api.Designs.Left = function(tag, value) {
+  if(value[0] == '+' || value[0] == '-') {
+    var left = apricot.toNum(value);
+    var left = apricot.toNum(tag.style.left) + left;
+    tag.style.left = apricot.toPx(left);
+  }
+}
+apricot.api.Designs.FullWidth = function(tag, value) {
+  if(value == true) {
+    tag.style.width = apricot.toPx(window.innerWidth * 1);
+  }
+}
+apricot.api.Designs.Src = function(tag, value) {
+  if(apricot.isChromeApp) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', value, true);
+    xhr.responseType = 'blob';
+    xhr.onload = function(e) {
+      var blob_url = window.URL.createObjectURL(this.response);
+      tag.src = blob_url;
+    }
+    xhr.send();
+  }else {
+    tag.src = value;
+  }
+}
+apricot.api.Designs.ShadowLevel = function(tag, value) {
+  if(value == 0) {
+    v = "none";
+  }else if(value == 1) {
+    v = "rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px";
+  }else if(value == 2) {
+    v = "0 2px 10px 0 rgba(0, 0, 0, 0.16)";
+  }else if(value == 3) {
+    v = "0 6px 20px 0 rgba(0, 0, 0, 0.19)";
+  }else if(value == 4) {
+    v = "0 17px 50px 0 rgba(0, 0, 0, 0.19)";
+  }else if(value == 5) {
+    v = "0 25px 55px 0 rgba(0, 0, 0, 0.21)";
+  }else {
+    v = "0 40px 77px 0 rgba(0, 0, 0, 0.22)";
+  }
+  tag.style.boxShadow = v;
+}
+apricot.api.Designs.Cardboard = function(tag, value) {
+  tag.style.overflow = "hidden";
+  if(value == 'a') {
+  }
+  else if(value == 'b') {
+    tag.style.borderWidth = "1px";
+    tag.style.borderStyle = "solid";
+    tag.style.borderColor = "#d8d8d8";
+    tag.style.borderBottomWidth = "2px";
+    tag.style.borderTopWidth = 0;
+  }else if(value == 'c') {
+    tag.style.boxShadow =  "0px 1px 1px #BBB4A5";
+    tag.style.borderTopWidth =  0;
+  }
+}
+apricot.api.Designs.Content = function(tag, value) {
+  tag.innerHTML = value;
+}
+apricot.api.Designs.Visible = function(tag, value) {
+  v = (value == true) ? "visible" : "hidden";
+  tag.style.visibility = v;
+}
+apricot.api.Designs.FontScale = function(tag, value) {
+  if(value == "L") {
+    tag.style.fontSize = "24px";
+  }else if(value == "S") {
+    tag.style.fontSize = "10px";
+  }
+}
+////////////////////////////////////////////////////////////////////////////////
+///
 /* 便利なイディオム */
 apricot.api.Idioms = {
 }
@@ -178,8 +268,9 @@ apricot.api.ToggleParts = apricot.api.ToggleBrick;
 apricot.api.MovePartsTo = apricot.api.MoveBrickTo;
 
 ////////////////////////////////////////////////////////////////////////////////
+/// Behavior API
 /* ドロワーパネル */
-apricot.api.OpenDrawerFromLeft = function(id, sec) {
+apricot.api.Behavior.OpenDrawerFromLeft = function(id, sec) {
   var obj = apricot.querySelector('#', id);
   var t = apricot.toNum(obj.firstChild.style.top);
   var l = apricot.toNum(obj.firstChild.style.left);
@@ -197,8 +288,7 @@ apricot.api.OpenDrawerFromLeft = function(id, sec) {
     {"transform": tf_tr3}
   ], id);
 }
-
-apricot.api.CloseDrawerFromLeft = function(id, sec) {
+apricot.api.Behavior.CloseDrawerFromLeft = function(id, sec) {
   var obj = apricot.querySelector('#', id);
   // 追いやる座標を取得
   var t = apricot.toNum(obj.style.top);
@@ -213,8 +303,7 @@ apricot.api.CloseDrawerFromLeft = function(id, sec) {
     {"transform": tf_tr3}
   ], id);
 }
-
-apricot.api.ToggleDrawerFromLeft = function(id, sec) {
+apricot.api.Behavior.ToggleDrawerFromLeft = function(id, sec) {
   var obj = apricot.querySelector('#', id);
   var l = obj.style.transform || '(-1px, 0, 0)';
   var l = l.split('(')[1].split('px')[0];
@@ -224,7 +313,79 @@ apricot.api.ToggleDrawerFromLeft = function(id, sec) {
     apricot.api.OpenDrawerFromLeft(id, sec);
   }
 }
+/* Scroll Header Panel */
+apricot.C.shp = {
+  "headerId": "",
+  "toolbarId": "",
+  "contentAreaId": "",
+  "type": "",
+  "observerId": "",
+  "stage": "",
+  "copiedHeaderImgId": ""
+};
+apricot.api.Behavior.AddScrollHeaderPanelObserver = function(headerId, toolbarId, contentAreaId, type) {
+  apricot.C.shp.headerId = headerId;
+  apricot.C.shp.toolbarId = toolbarId;
+  apricot.C.shp.contentAreaId = contentAreaId;
+  apricot.C.shp.type = type;
+  apricot.C.shp.stage = headerId.split('_')[0];
+  if(type == 'a') {
+    var imgHeight = a.Tools.ToNum(a.Dom(headerId).style.height)
+    var toolbarTop = a.Tools.ToNum(a.Dom(toolbarId).style.top);
+    var toolbarHeight = a.Tools.ToNum(a.Dom(toolbarId).style.height);
+    var contentAreaTop = a.Tools.ToNum(a.Dom(contentAreaId).style.top);
+    a.Dom(toolbarId).style.top = (toolbarTop - toolbarHeight) + 'px';
+    a.Dom(contentAreaId).style.top = (contentAreaTop - toolbarHeight) + 'px';
+    var copyHeaderImgId = a.DuplicateBrick(headerId, apricot.C.shp.stage);
+    a.Dom(headerId).style.backgroundColor = a.Dom(toolbarId).style.backgroundColor;
+    a.Dom(copyHeaderImgId).style.backgroundImage = "";
+    a.Dom(copyHeaderImgId).style.backgroundColor = a.Dom(toolbarId).style.backgroundColor;
+    a.Dom(copyHeaderImgId).style.opacity = 0;
+    a.Dom(copyHeaderImgId).style.zIndex = 5;
+    a.ShowBrick(copyHeaderImgId);
+    a.Dom(toolbarId).style.backgroundColor = "rgba(0,0,0,0)";
+    apricot.C.shp.copiedHeaderImgId = copyHeaderImgId;
+  }
+  apricot.C.shp.observerId = window.addEventListener('apricot-scroll', function(e) {
+    apricot.observeScrollHeaderPanel(e);
+  }, false);
+}
+apricot.observeScrollHeaderPanel = function(e) {
+  var headerId = apricot.C.shp.headerId;
+  var toolbarId = apricot.C.shp.toolbarId;
+  var type = apricot.C.shp.type;
+  if(type == 'a') {  // ヘッダ画像の透明度が変化するタイプ
+    var toolbarHeight = a.Tools.ToNum(a.Dom(toolbarId).style.height);
+    var imgHeight = a.Tools.ToNum(a.Dom(headerId).style.height) - toolbarHeight;
+    var scrolled_y = e.detail.y;
+    if(scrolled_y < imgHeight) {
+      a.Dom(toolbarId).style.position = "absolute";
+      a.Dom(toolbarId).style.top = imgHeight + 'px';
+      a.Dom(headerId).style.position = "fixed";
+      a.Dom(toolbarId).style.backgroundColor = "rgba(0,0,0,0)";
+      a.Dom(apricot.C.shp.copiedHeaderImgId).style.opacity = e.detail.y / imgHeight;
+    }else if(scrolled_y <= scrolled_y + toolbarHeight) {
+      a.Dom(toolbarId).style.top = 0 + 'px';
+      a.Dom(toolbarId).style.position = "fixed";
+      a.Dom(toolbarId).style.backgroundColor = a.Dom(headerId).style.backgroundColor;
+      a.Dom(apricot.C.shp.copiedHeaderImgId).style.opacity = '1.0';
+    }
+  }else if(type == 'b') {
+    var imgHeight = a.Tools.ToNum(a.Dom(headerId).style.height);
+    var toolbarHeight = a.Tools.ToNum(a.Dom(toolbarId).style.height);
+    var scrolled_y = e.detail.y;
+    if(scrolled_y < imgHeight) {
+      a.Dom(toolbarId).style.position = "absolute";
+      a.Dom(toolbarId).style.top = imgHeight + 'px';
+      a.Dom(headerId).style.position = "fixed";
+    }else if(scrolled_y <= scrolled_y + toolbarHeight) {
+      a.Dom(toolbarId).style.top = 0 + 'px';
+      a.Dom(toolbarId).style.position = "fixed";
+    }
+  }
+}
 
+////////////////////////////////////////////////////////////////////////////////
 /* 画像のプリロード
  * 完了すると`apricot-imgs-ready`が発火する
  */
@@ -334,7 +495,6 @@ apricot.api.GetFlexibleWidth = function(column, margins, stage_width, min_width,
   return [w, ml, mr, c];
 }
 
-
 // TODO: transitionを解除するメソッド
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -391,14 +551,12 @@ apricot.addClass = function(classname, id) {
     apricot.querySelector('#', id).className = cns;
   }
 }
-
 apricot.removeClass = function(classname, id) {
   var cns = apricot.querySelector('#', id).className;
   cns = apricot.split(' ', classname, cns);
   cns = apricot.join(' ', cns);
   apricot.querySelector('#', id).className = cns;
 }
-
 apricot.hasClass = function(className, id) {
   var cns = apricot.querySelector('#', id).className;
   cns_original = apricot.split(' ', null, cns);
@@ -408,10 +566,6 @@ apricot.hasClass = function(className, id) {
   return false;
 }
 
-//////// Apricot 定数 ////////
-apricot.C = {
-  "cn": "apricot"
-};
 
 apricot.Stage = function() {
   return document;
@@ -428,12 +582,10 @@ apricot.toPx = function(v) {
   if(v.search('px') == -1) return v + 'px';
   return v;
 };
-
 apricot.toNum = function(v) {
   v = '' + v;
   return +(v.replace(/px/gi, ''));
 }
-
 apricot.isChromeApp = function() {
   if(window.chrome != undefined && window.chrome.app.window != undefined) {
     return true;
@@ -445,7 +597,9 @@ apricot.isChromeApp = function() {
 apricot.log = function(msg) {
   console.info(msg);
 };
-
+apricot.warn = function(msg) {
+  console.log(msg);
+}
 //////// Event Listeners ////////
 apricot.setEventsListeners = function() {
   var events = ['click', 'change'];
@@ -502,6 +656,25 @@ apricot.fireInitEvent = function() {
   });
   window.dispatchEvent(ev);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+/// 後方互換
+apricot.api.ToggleDrawerFromLeft = function(id, sec) {
+  apricot.log("廃止予定のAPIです.今後は apricot.api.Behavior.ToggleDrawerFromLeft を使用してください。");
+  apricot.api.Behavior.ToggleDrawerFromLeft(id, sec);
+}
+apricot.api.CloseDrawerFromLeft = function(id, sec) {
+  apricot.log("廃止予定のAPIです.今後は apricot.api.Behavior.CloseDrawerFromLeft を使用してください。");
+  apricot.api.Behavior.CloseDrawerFromLeft(id, sec);
+}
+apricot.api.OpenDrawerFromLeft = function(id, sec) {
+  apricot.log("廃止予定のAPIです.今後は apricot.api.Behavior.OpenDrawerFromLeft を使用してください。");
+  apricot.api.Behavior.OpenDrawerFromLeft(id, sec);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+
 
 window.addEventListener('load', function(e) {
   apricot.log("Apricot is ready.");

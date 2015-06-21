@@ -12,84 +12,33 @@ apricot.init.applyDesign = function(brick_design, tag) {
       var v = '';
       switch (key) {
         case "Visible":
-            v = (value == true) ? "visible" : "hidden";
-            tag.style.visibility = v;
+            apricot.api.Designs.Visible(tag, value);
             break;
         case "FontScale":
-            if(value == "L") {
-              tag.style.fontSize = "24px";
-            }
+            apricot.api.Designs.FontScale(tag, value);
             break;
         case "Content":
-            tag.innerHTML = value;
+            apricot.api.Designs.Content(tag, value);
             break;
         case "Top":
-            if(value[0] == '+' || value[0] == '-') {
-              var top = apricot.toNum(value);
-              var top = apricot.toNum(tag.style.top) + top;
-              tag.style.top = apricot.toPx(top);
-            }
+            apricot.api.Designs.Top(tag, value);
             break;
         case "Left":
-            if(value[0] == '+' || value[0] == '-') {
-              var left = apricot.toNum(value);
-              var left = apricot.toNum(tag.style.left) + left;
-              tag.style.left = apricot.toPx(left);
-            }
+            apricot.api.Designs.Left(tag, value);
             break;
         case "FullWidth":
-            if(value == true) {
-              tag.style.width = apricot.toPx(window.innerWidth * 1);
-            }
+            apricot.api.Designs.FullWidth(tag, value);
             break;
         case "Src":
-            if(apricot.isChromeApp) {
-              var xhr = new XMLHttpRequest();
-              xhr.open('GET', value, true);
-              xhr.responseType = 'blob';
-              xhr.onload = function(e) {
-                var blob_url = window.URL.createObjectURL(this.response);
-                tag.src = blob_url;
-              }
-              xhr.send();
-            }else {
-              tag.src = value;
-            }
+            apricot.api.Designs.Src(tag, value);
             break;
         case "ShadowLevel":
-            if(value == 0) {
-              v = "none";
-            }else if(value == 1) {
-              v = "rgba(0, 0, 0, 0.098) 0px 2px 4px, rgba(0, 0, 0, 0.098) 0px 0px 3px";
-            }else if(value == 2) {
-              v = "0 2px 10px 0 rgba(0, 0, 0, 0.16)";
-            }else if(value == 3) {
-              v = "0 6px 20px 0 rgba(0, 0, 0, 0.19)";
-            }else if(value == 4) {
-              v = "0 17px 50px 0 rgba(0, 0, 0, 0.19)";
-            }else if(value == 5) {
-              v = "0 25px 55px 0 rgba(0, 0, 0, 0.21)";
-            }else {
-              v = "0 40px 77px 0 rgba(0, 0, 0, 0.22)";
-            }
-            tag.style.boxShadow = v;
-            break;
-        default:
+            apricot.api.Designs.ShadowLevel(tag, value);
             break;
         case "Cardboard":
-            tag.style.overflow = "hidden";
-            if(value == 'a') {
-            }
-            else if(value == 'b') {
-              tag.style.borderWidth = "1px";
-              tag.style.borderStyle = "solid";
-              tag.style.borderColor = "#d8d8d8";
-              tag.style.borderBottomWidth = "2px";
-              tag.style.borderTopWidth = 0;
-            }else if(value == 'c') {
-              tag.style.boxShadow =  "0px 1px 1px #BBB4A5";
-              tag.style.borderTopWidth =  0;
-            }
+            apricot.api.Designs.Cardboard(tag, value);
+            break;
+        default:
             break;
       }
     }

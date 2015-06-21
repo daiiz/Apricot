@@ -1,7 +1,6 @@
 apricot.manifest = {
   "scrollHeaderPanel": {
     "brick_0": {
-      "role": "html-div",
       "design": {
         "height": "192px",
         "backgroundImage": "url(breakfast.jpg)"
@@ -17,8 +16,8 @@ apricot.manifest = {
         "height": "40px",
         "width": "40px",
         "zIndex": "20",
-        "Left": "+0px",
-        "Top": "-1px"
+        "Top": "-1px",
+        "cursor": "pointer"
       }
     },
 
@@ -39,8 +38,10 @@ apricot.manifest = {
     "brick_3": {
       "design": {
         "height": "",
+        "box-sizing": "border-box",
         "Top": (-42-21)+"px",
-        "background": "#e9e7e4"
+        "background": "#e9e7e4",
+        "padding-left": "20px"
       }
     }
   }
