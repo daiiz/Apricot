@@ -24,14 +24,14 @@ apricot.init.applyDesign = function(brick_design, tag) {
             tag.innerHTML = value;
             break;
         case "Top":
-            if(value[0] == '+' || value[1] == '-') {
+            if(value[0] == '+' || value[0] == '-') {
               var top = apricot.toNum(value);
               var top = apricot.toNum(tag.style.top) + top;
               tag.style.top = apricot.toPx(top);
             }
             break;
         case "Left":
-            if(value[0] == '+' || value[1] == '-') {
+            if(value[0] == '+' || value[0] == '-') {
               var left = apricot.toNum(value);
               var left = apricot.toNum(tag.style.left) + left;
               tag.style.left = apricot.toPx(left);
