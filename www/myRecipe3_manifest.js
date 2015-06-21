@@ -44,5 +44,9 @@ apricot.manifest = {
         "padding-left": "20px"
       }
     }
-  }
+  },
+
+  "scrollHeaderPanelCopy": ""
 }
+
+apricot.manifest.scrollHeaderPanelCopy = apricot.manifest.scrollHeaderPanel;

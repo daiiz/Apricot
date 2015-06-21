@@ -323,32 +323,41 @@ apricot.C.shp = {
   "stage": "",
   "copiedHeaderImgId": ""
 };
-apricot.api.Behavior.AddScrollHeaderPanelObserver = function(headerId, toolbarId, contentAreaId, type) {
+apricot.api.Behavior.AddScrollHeaderPanelObserver = function(headerId, toolbarId, contentAreaId, type, flag) {
+  /* flagがfalseの場合は有効なObserverを変更するだけ */
+  /* flag=falseで呼び出すことでObserverを切り替えられる */
   apricot.C.shp.headerId = headerId;
   apricot.C.shp.toolbarId = toolbarId;
   apricot.C.shp.contentAreaId = contentAreaId;
   apricot.C.shp.type = type;
   apricot.C.shp.stage = headerId.split('_')[0];
-  if(type == 'a') {
-    var imgHeight = a.Tools.ToNum(a.Dom(headerId).style.height)
-    var toolbarTop = a.Tools.ToNum(a.Dom(toolbarId).style.top);
-    var toolbarHeight = a.Tools.ToNum(a.Dom(toolbarId).style.height);
-    var contentAreaTop = a.Tools.ToNum(a.Dom(contentAreaId).style.top);
-    a.Dom(toolbarId).style.top = (toolbarTop - toolbarHeight) + 'px';
-    a.Dom(contentAreaId).style.top = (contentAreaTop - toolbarHeight) + 'px';
-    var copyHeaderImgId = a.DuplicateBrick(headerId, apricot.C.shp.stage);
-    a.Dom(headerId).style.backgroundColor = a.Dom(toolbarId).style.backgroundColor;
-    a.Dom(copyHeaderImgId).style.backgroundImage = "";
-    a.Dom(copyHeaderImgId).style.backgroundColor = a.Dom(toolbarId).style.backgroundColor;
-    a.Dom(copyHeaderImgId).style.opacity = 0;
-    a.Dom(copyHeaderImgId).style.zIndex = 5;
-    a.ShowBrick(copyHeaderImgId);
-    a.Dom(toolbarId).style.backgroundColor = "rgba(0,0,0,0)";
-    apricot.C.shp.copiedHeaderImgId = copyHeaderImgId;
+  if(apricot.C.shp.copiedHeaderImgId != "") {
+    a.Dom(apricot.C.shp.copiedHeaderImgId).style.opacity = 0;
   }
-  apricot.C.shp.observerId = window.addEventListener('apricot-scroll', function(e) {
-    apricot.observeScrollHeaderPanel(e);
-  }, false);
+
+  /* 実際にリスナを登録する作業 */
+  if(flag) {
+    if(type == 'a') {
+      var imgHeight = a.Tools.ToNum(a.Dom(headerId).style.height)
+      var toolbarTop = a.Tools.ToNum(a.Dom(toolbarId).style.top);
+      var toolbarHeight = a.Tools.ToNum(a.Dom(toolbarId).style.height);
+      var contentAreaTop = a.Tools.ToNum(a.Dom(contentAreaId).style.top);
+      a.Dom(toolbarId).style.top = (toolbarTop - toolbarHeight) + 'px';
+      a.Dom(contentAreaId).style.top = (contentAreaTop - toolbarHeight) + 'px';
+      a.Dom(headerId).style.backgroundColor = a.Dom(toolbarId).style.backgroundColor;
+      var copyHeaderImgId = a.DuplicateBrick(headerId, apricot.C.shp.stage);
+      a.Dom(copyHeaderImgId).style.backgroundImage = "";
+      a.Dom(copyHeaderImgId).style.backgroundColor = a.Dom(toolbarId).style.backgroundColor;
+      a.Dom(copyHeaderImgId).style.opacity = 0;
+      a.Dom(copyHeaderImgId).style.zIndex = 5;
+      a.ShowBrick(copyHeaderImgId);
+      a.Dom(toolbarId).style.backgroundColor = "rgba(0,0,0,0)";
+      apricot.C.shp.copiedHeaderImgId = copyHeaderImgId;
+    }
+    apricot.C.shp.observerId = window.addEventListener('apricot-scroll', function(e) {
+      apricot.observeScrollHeaderPanel(e);
+    }, false);
+  }
 }
 apricot.observeScrollHeaderPanel = function(e) {
   var headerId = apricot.C.shp.headerId;
