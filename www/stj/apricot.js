@@ -1,6 +1,6 @@
 /**
  * Project Apricot
- * Copyright (c) 2015 daiz, mathharachan, risingsun_33178.
+ * Copyright (c) 2015 daiz.
  */
 
 var apricot = apricot || {};
