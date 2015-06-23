@@ -32,7 +32,7 @@ apricot.manifest = {
         "padding-left": "20px",
         "backgroundColor": "#0097A7",
         "fontSize": "40px",
-        "color": "rgb(234, 223, 198)",
+        "color": "#fff",
         "fontFamily": "roboto",
         "height": "64px",
         "Top": "-42px",
