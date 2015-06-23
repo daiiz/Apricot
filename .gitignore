@@ -3,3 +3,4 @@ tmp/*.az
 tmp/*.u
 tmp/*.div
 sandbox/
+www/bower_components/
