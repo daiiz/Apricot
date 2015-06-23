@@ -20,6 +20,12 @@ apricot.init.applyDesign = function(brick_design, tag) {
         case "Content":
             apricot.api.Designs.Content(tag, value);
             break;
+        case "ClassName":
+            apricot.api.Designs.ClassName(tag, value);
+            break;
+        case "Dataset":
+            apricot.api.Designs.Dataset(tag, value);
+            break;
         case "Top":
             apricot.api.Designs.Top(tag, value);
             break;
@@ -99,7 +105,6 @@ apricot.init.buidUI = function(manifest) {
       tag = apricot.querySelector('#', id);
       // CSS Styles 及び Apricot Design を適用する
       tag = apricot.init.applyDesign((brick.design || {}), tag);
-
     }
 
   }

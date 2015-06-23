@@ -115,6 +115,18 @@ apricot.api.Designs.FontScale = function(tag, value) {
     tag.style.fontSize = "10px";
   }
 }
+apricot.api.Designs.ClassName = function(tag, value) {
+  if(tag.className == undefined) tag.className = "";
+  tag.className += ' ' + value;
+}
+apricot.api.Designs.Dataset = function(tag, value) {
+  var keys = Object.keys(value);
+  for(var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    var val = value[key];
+    tag.dataset[key] = val;
+  }
+}
 ////////////////////////////////////////////////////////////////////////////////
 ///
 /* 便利なイディオム */
@@ -126,24 +138,6 @@ apricot.api.Dom = function(id) {
   return apricot.querySelector('#', id);
 }
 
-/* ユーザー定義のDOMに対してApricot APIを有効化するための整形を行う */
-apricot.api.FormatDom = function(user_dom, event_root_id) {
-  var d = '';
-  apricot.querySelector('#', 'apricot_workspace').innerHTML = user_dom;
-  var obj = apricot.querySelector('#', 'apricot_workspace').firstChild;
-  // event-root-id を付与する
-  // イベント発火Idはこちらが優先される
-  if(event_root_id != null) {
-    obj.dataset.eventRootId = event_root_id;
-  }
-  // 後天的Apricot要素であることを示すクラス名を付与する
-  obj.className = 'xapricot ' + obj.className;
-
-  apricot.querySelector('#', 'apricot_workspace').innerHTML = '';
-  apricot.querySelector('#', 'apricot_workspace').appendChild(obj);
-  return apricot.querySelector('#', 'apricot_workspace').innerHTML;
-}
-
 /* id判定 */
 apricot.api.IsId = function(id_with_hyphen, id) {
   if(id_with_hyphen.split('-')[0] == id) return true;
@@ -151,7 +145,7 @@ apricot.api.IsId = function(id_with_hyphen, id) {
 }
 
 /* Apricotオブジェクトにアニメーションキーフレームを適用する */
-apricot.api.ApplayAnimation = function(keyframe_name, animation_settings, transitions_settings, id) {
+apricot.api.ApplyAnimation = function(keyframe_name, animation_settings, transitions_settings, id) {
   // アニメーション制御のデフォルト値
   var default_animation_settings = [
     {"animationTimingFunction": "ease"},
@@ -173,22 +167,6 @@ apricot.api.ApplayAnimation = function(keyframe_name, animation_settings, transi
   apricot.setStyle([{"animationName": keyframe_name}], id);
 }
 
-
-/* #idのbrickをparts#parts_id内に非表示状態でコピー生成し、
- * コピーされたbrickのidを返す。
- * 要素#idは非表示状態であることを仮定する
- */
-apricot.api.CopyBrickInParts = function(parts_id, id) {
-  var child_id = apricot.api.DuplicateBrick(id, parts_id);
-  var child = apricot.querySelector('#', child_id);
-  child.id = child_id;
-  child.style.top = "";
-  child.style.left = "";
-  child.style.position = "relative";
-  var t = child.outerHTML;
-  apricot.addClass('element-hidden', child_id);
-  return child_id;
-}
 
 /* ブリックの表示・非表示切り替え（アニメーションなし） */
 apricot.api.ShowBrick = function(id) {
@@ -215,26 +193,70 @@ apricot.api.MoveBrickTo = function(left, top, id) {
   ], id);
 };
 
-/* コピー元の真上にブリックを複製する（アニメーションなし）
- * 複製されたブリックのidを返す。初期値では非表示状態。
+
+/* 特定のbrickを継承してコピーを生成する。
+ * 何も継承しない場合は新規生成扱いとなる
  */
-apricot.api.DuplicateBrick = function(id, p_id) {
-  var target = apricot.querySelector('#', id);
-  var new_id = target.id + '-c' + Math.floor(Math.random()*100000);
-  var attrv = target.attributes;
-  var attrs_len = attrv.length;
-
-  var copied = document.createElement(target.tagName);
-  for(var i = 0; i < attrs_len; i++) {
-    copied.setAttribute(attrv[i].nodeName, attrv[i].nodeValue);
+apricot.api.CreateBrickExtends = function(manifest, extends_brick_id) {
+  var tag_name = undefined;
+  if(extends_brick_id != null) {
+    tag_name = apricot.querySelector('#', extends_brick_id).tagName;
   }
-  var parent = apricot.querySelector('#', p_id) || target.parentNode;
-  copied.id = new_id;
-  copied.className += ' element-visible';
-  copied.className = copied.className.replace(/element\-visible/gi, 'element-hidden');
+  tag_name = tag_name || manifest.role || 'html-div';
+  tag_name = tag_name.replace(/^html\-/g, '');
+  // タグを生成する
+  var tag = document.createElement(tag_name);
+  // 属性を設定する
+  var attrs = manifest.property || {};
+  var keys = Object.keys(attrs);
+  for(var k = 0; k < keys.length; k++) {
+    var key = keys[k];
+    var value = attrs[key];
+    tag.setAttribute(key, value);
+  }
+  if(extends_brick_id != null) {
+    id = extends_brick_id;
+    // width, height, backgroundColor を継承する
+    tag.style.width = apricot.querySelector('#', id).style.width;
+    tag.style.height = apricot.querySelector('#', id).style.height;
+    tag.style.backgroundColor = apricot.querySelector('#', id).style.backgroundColor;
+    // top, left を継承する
+    tag.style.top = apricot.querySelector('#', id).style.top;
+    tag.style.left = apricot.querySelector('#', id).style.left;
+    if(tag.title == undefined) {
+      tag.title = apricot.querySelector('#', id).title;
+    }
+    // classを設定する
+    tag.className = apricot.querySelector('#', id).className;
+  }else {
+    // xApricot class 付与
+    tag.className += "xapricot";
+  }
+  // CSS Styles 及び Apricot Design を適用する
+  tag = apricot.init.applyDesign((manifest.design || {}), tag);
+  return tag;
+}
 
-  parent.appendChild(copied);
-  return new_id;
+/* 特定のDOM内にbrickを追加する */
+apricot.api.AppendBrick = function(dom, stage_id) {
+  var stage = apricot.api.Dom(stage_id);
+  var parts_name = stage_id;//.split('_')[0];
+  var bricks_num = stage.childElementCount;
+
+  /* 身代わりをレンダリング */
+  var placeholder = document.createElement('div');
+  placeholder.id = parts_name + '_' + bricks_num + '-init';
+  stage.appendChild(placeholder);
+
+  /* Apricot id 付与 */
+  dom.id = parts_name + '_' + bricks_num;
+  apricot.querySelector('#', 'apricot_workspace').innerHTML = '';
+  apricot.querySelector('#', 'apricot_workspace').appendChild(dom);
+  dom = apricot.querySelector('#', 'apricot_workspace').innerHTML;
+  apricot.querySelector('#', 'apricot_workspace').innerHTML = '';
+
+  apricot.querySelector('#', parts_name + '_' + bricks_num + '-init').outerHTML = dom;
+  return parts_name + '_' + bricks_num;
 }
 
 /* ブリックを除去 */
@@ -308,9 +330,9 @@ apricot.api.Behavior.ToggleDrawerFromLeft = function(id, sec) {
   var l = obj.style.transform || '(-1px, 0, 0)';
   var l = l.split('(')[1].split('px')[0];
   if(apricot.toNum(l) >= 0) {
-    apricot.api.CloseDrawerFromLeft(id, sec);
+    apricot.api.Behavior.CloseDrawerFromLeft(id, sec);
   }else if(apricot.toNum(l) < 0){
-    apricot.api.OpenDrawerFromLeft(id, sec);
+    apricot.api.Behavior.OpenDrawerFromLeft(id, sec);
   }
 }
 /* Scroll Header Panel */
@@ -326,6 +348,7 @@ apricot.C.shp = {
 apricot.api.Behavior.AddScrollHeaderPanelObserver = function(headerId, toolbarId, contentAreaId, type, flag) {
   /* flagがfalseの場合は有効なObserverを変更するだけ */
   /* flag=falseで呼び出すことでObserverを切り替えられる */
+  var a = apricot.api;
   apricot.C.shp.headerId = headerId;
   apricot.C.shp.toolbarId = toolbarId;
   apricot.C.shp.contentAreaId = contentAreaId;
@@ -334,7 +357,6 @@ apricot.api.Behavior.AddScrollHeaderPanelObserver = function(headerId, toolbarId
   if(apricot.C.shp.copiedHeaderImgId != "") {
     a.Dom(apricot.C.shp.copiedHeaderImgId).style.opacity = 0;
   }
-
   /* 実際にリスナを登録する作業 */
   if(flag) {
     if(type == 'a') {
@@ -345,7 +367,7 @@ apricot.api.Behavior.AddScrollHeaderPanelObserver = function(headerId, toolbarId
       a.Dom(toolbarId).style.top = (toolbarTop - toolbarHeight) + 'px';
       a.Dom(contentAreaId).style.top = (contentAreaTop - toolbarHeight) + 'px';
       a.Dom(headerId).style.backgroundColor = a.Dom(toolbarId).style.backgroundColor;
-      var copyHeaderImgId = a.DuplicateBrick(headerId, apricot.C.shp.stage);
+      var copyHeaderImgId = apricot.duplicateBrick(headerId, apricot.C.shp.stage);
       a.Dom(copyHeaderImgId).style.backgroundImage = "";
       a.Dom(copyHeaderImgId).style.backgroundColor = a.Dom(toolbarId).style.backgroundColor;
       a.Dom(copyHeaderImgId).style.opacity = 0;
@@ -363,6 +385,7 @@ apricot.observeScrollHeaderPanel = function(e) {
   var headerId = apricot.C.shp.headerId;
   var toolbarId = apricot.C.shp.toolbarId;
   var type = apricot.C.shp.type;
+  var a = apricot.api;
   if(type == 'a') {  // ヘッダ画像の透明度が変化するタイプ
     var toolbarHeight = a.Tools.ToNum(a.Dom(toolbarId).style.height);
     var imgHeight = a.Tools.ToNum(a.Dom(headerId).style.height) - toolbarHeight;
@@ -605,6 +628,41 @@ apricot.isChromeApp = function() {
   }
   return false;
 }
+apricot.traceIds = function(obj) {
+  var res = [];
+  var i = 0;
+  while(obj.tagName.toLowerCase() != "body" && obj.tagName.toLowerCase() != "html" && i < 20) {
+    i += 1;
+    var id = obj.id;
+    var cn = obj.className || "";
+    if(cn.search("apricot") != -1) {
+      res.unshift(id);
+    }
+    obj = obj.parentElement;
+  }
+  return res;
+}
+
+// shpとの依存関係が解消され次第廃止予定
+apricot.duplicateBrick = function(id, p_id) {
+  var target = apricot.querySelector('#', id);
+  var new_id = target.id + '-c' + Math.floor(Math.random()*100000);
+  var attrv = target.attributes;
+  var attrs_len = attrv.length;
+
+  var copied = document.createElement(target.tagName);
+  for(var i = 0; i < attrs_len; i++) {
+    copied.setAttribute(attrv[i].nodeName, attrv[i].nodeValue);
+  }
+  var parent = apricot.querySelector('#', p_id) || target.parentNode;
+  copied.id = new_id;
+  copied.className += ' element-visible';
+  copied.className = copied.className.replace(/element\-visible/gi, 'element-hidden');
+
+  parent.appendChild(copied);
+  return new_id;
+}
+
 
 //////// Apricot Logger ////////
 apricot.log = function(msg) {
@@ -620,27 +678,22 @@ apricot.setEventsListeners = function() {
     // イベントを仕掛ける
     window.addEventListener(events[e], function(info) {
       // Apricot Element Object は .apricot | .xapricot を有する
-      if(info.target.className.search(apricot.C.cn) != -1) {
+      //if(info.target.className.search(apricot.C.cn) != -1) {
         var event_name = 'apricot-' + info.type;
-        // カスタムイベントを生成し、発火する
-        // 通常、発火元はidとなるが、要素がeventRootIdをもつ場合はこちらが優先される
-        // 後者の場合、hasEventRootId を true にすることによって伝達される。
         var eri = info.target.dataset.eventRootId;
         var id = info.target.id;
-        var has_eri = false;
-        if(eri != undefined && eri != '') {
-          id = eri;
-          has_eri = true;
-        }
+        var ids = apricot.traceIds(info.target);
         var ev = new CustomEvent(event_name, {
           detail: {
-            brick: {id: id, hasEventRootId: has_eri},
-            part: {id: info.target.id.split('_')[0]},
-            fired: {event_name: event_name}
+            brick: {"id": ids[1], "ids": ids},
+            eventOriginId: info.target.id,
+            dataset: apricot.querySelector('#', ids[1]).dataset,
+            fired: {event_name: event_name},
+            it: info.target
           }
         });
         window.dispatchEvent(ev);
-      }
+      //}
     }, false);
   }
   return 0;
@@ -671,20 +724,15 @@ apricot.fireInitEvent = function() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// 後方互換
-apricot.api.ToggleDrawerFromLeft = function(id, sec) {
-  apricot.log("廃止予定のAPIです.今後は apricot.api.Behavior.ToggleDrawerFromLeft を使用してください。");
-  apricot.api.Behavior.ToggleDrawerFromLeft(id, sec);
-}
-apricot.api.CloseDrawerFromLeft = function(id, sec) {
-  apricot.log("廃止予定のAPIです.今後は apricot.api.Behavior.CloseDrawerFromLeft を使用してください。");
-  apricot.api.Behavior.CloseDrawerFromLeft(id, sec);
-}
-apricot.api.OpenDrawerFromLeft = function(id, sec) {
-  apricot.log("廃止予定のAPIです.今後は apricot.api.Behavior.OpenDrawerFromLeft を使用してください。");
-  apricot.api.Behavior.OpenDrawerFromLeft(id, sec);
-}
-
+/// 廃止-代替リスト
+apricot.api.Deprecated = [
+  {"ToggleDrawerFromLeft@005": apricot.api.Behavior.ToggleDrawerFromLeft},
+  {"CloseDrawerFromLeft@005": apricot.api.Behavior.CloseDrawerFromLeft},
+  {"OpenDrawerFromLeft@005": apricot.api.Behavior.OpenDrawerFromLeft},
+  {"DuplicateBrick@005": ""},
+  {"CopyBrickInParts@005": ""},
+  {"FormatDom@005": ""}
+];
 ////////////////////////////////////////////////////////////////////////////////
 
 

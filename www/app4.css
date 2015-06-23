@@ -14,3 +14,19 @@ html {
   margin-top: 8px;
   margin-left: 50px;
 }
+
+.m {
+  padding: 10px;
+  margin: auto;
+  background-color: #fff;
+  margin-top: 20px;
+  width: 85%;
+  cursor: pointer;
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+
+#panel {
+  position: fixed;
+  z-index: 11;
+}

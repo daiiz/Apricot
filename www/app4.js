@@ -1,10 +1,40 @@
 var a = apricot.api;
 
+window.addEventListener('apricot-click', function(e) {
+  //console.log(e.detail);
+  if(a.IsId(e.detail.brick.id, 'scrollHeaderPanel_1')) {
+    a.Behavior.ToggleDrawerFromLeft('panel', '0.6');
+  }
+  else if(e.detail.it.dataset["me"] == "card") {
+    e.detail.it.elevation += 1;
+    if(e.detail.it.elevation > 5) e.detail.it.elevation = 0;
+  }
+}, false);
+
 window.addEventListener('apricot-ready', function(e) {
   for(var i = 0; i < 30; i++) {
-    a.Dom('scrollHeaderPanel_3').innerHTML += "<h1>Hello "+ i +"</h1>";
+    // ボタンを生成
+    var button = a.CreateBrickExtends({
+      role: "paper-button",
+      design: {
+        Content: "Hello " + i
+      }
+    }, null);
+    // カードを生成
+    var card = a.CreateBrickExtends({
+      role: "paper-material",
+      design: {
+        "ClassName": "m",
+        "transform": "scale(0)",
+        "Content": "foo<br>barbar<br>",
+        "Dataset": {me: "card"}
+      }
+    }, null);
+    card.appendChild(button); //これは良いのか
+    var new_id = a.AppendBrick(card, 'scrollHeaderPanel_3');
+    a.ApplyAnimation("scaleShow", null, null, new_id);
   }
 
-  a.Dom('scrollHeaderPanel_2').innerHTML = '<div class="t">Material Design</div>';
+  a.Designs.Content(a.Dom('scrollHeaderPanel_2'), '<div class="t">Material Design</div>');
   a.Behavior.AddScrollHeaderPanelObserver('scrollHeaderPanel_0', 'scrollHeaderPanel_2', 'scrollHeaderPanel_3', 'b', true);
 }, false);

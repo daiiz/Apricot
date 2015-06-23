@@ -3,7 +3,7 @@
 
 # Project Apricot
 # Copyright (c) 2015 daiz.
-# 
+#
 
 import sys
 
@@ -43,6 +43,14 @@ def createBasicTags(title):
       '<link rel="stylesheet" href="stj/apricot.css">',
       '<link rel="stylesheet" href="stj/apricot_animation.css">',
       '<link rel="stylesheet" href="{}.css">'.format(user_script_finename),
+      # <Polymer Elements>:
+      '<link rel="import" href="bower_components/paper-fab/paper-fab.html">',
+      '<link rel="import" href="bower_components/paper-material/paper-material.html">',
+      '<link rel="import" href="bower_components/iron-icons/iron-icons.html">',
+      '<link rel="import" href="bower_components/iron-icons/iron-icons.html">',
+      '<link rel="import" href="bower_components/paper-button/paper-button.html">',
+      '<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">',
+      # </Polymer Elements>
       '<title>{}</title>'.format(title),
       '<style>{}</style>'.format(sty),
       '</head>',

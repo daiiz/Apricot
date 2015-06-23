@@ -9,24 +9,23 @@ apricot.manifest = {
     },
 
     "brick_1": {
+      "role": "paper-icon-button",
       "property" :{
-        "title": ""
+        "icon": "menu"
       },
       "design": {
-        "position": "fixed",
-        "backgroundColor": "rgba(0,0,0,0)",
-        "backgroundImage": "url(apricot.png)",
-        "background-size": "cover",
-        "height": "40px",
-        "width": "40px",
-        "zIndex": "20",
-        "Top": "-1px",
-        "cursor": "pointer"
+       "width": "",
+       "height": "",
+       "backgroundColor": "rgba(0,0,0,0)",
+       "position": "fixed",
+       "zIndex": 20,
+       "color": "#fff"
       }
     },
 
     "brick_2": {
       "design": {
+        "animated": true,
         "zIndex": 10,
         "box-sizing": "border-box",
         "padding-left": "20px",
@@ -45,13 +44,16 @@ apricot.manifest = {
         "height": "",
         "box-sizing": "border-box",
         "Top": (-42-21)+"px",
-        "background": "#EEEEEF",
-        "padding-left": "20px",
+        "background": "#e9e7e4",
         "FullWidth": true
       }
     },
 
     "brick_4": {
+      "role": "paper-fab",
+      "property": {
+        "icon": "arrow-forward"
+      },
       "design": {
         "position": "fixed",
         "backgroundColor": "#EFFB41",
@@ -59,9 +61,15 @@ apricot.manifest = {
         "height": "56px",
         "bottom": "16px",
         "right": "16px",
-        "borderRadius": "50%",
-        "ShadowLevel": 1,
         "cursor": "pointer"
+      }
+    }
+  },
+
+  "panel": {
+    "panel_1": {
+      "design": {
+        "zIndex": 21
       }
     }
   }
