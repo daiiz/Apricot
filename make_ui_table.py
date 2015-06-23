@@ -3,7 +3,7 @@
 
 # Project Apricot
 # Copyright (c) 2015 daiz.
-# 
+#
 
 import sys
 import os.path
@@ -116,7 +116,7 @@ def debug_render(colorInfo, w, h):
         print("{}: rgba{}".format(color['rgbvar'], color['rgb']))
     # 最大カラー変数名を出力
     printnn('\n')
-    print(v)
+    print(len(usingColors) - 1)  # Bug?
 
 if __name__ == '__main__':
     src = get_img_path()

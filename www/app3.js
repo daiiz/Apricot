@@ -6,11 +6,11 @@ window.addEventListener('apricot-ready', function(e) {
     a.Dom('scrollHeaderPanelCopy_3').innerHTML += "<h1>Hello "+ i +"</h1>";
   }
 
-  a.Dom('scrollHeaderPanel_2').innerHTML = '<div class="t">Scroll Header Panel A</div>';
-  a.Dom('scrollHeaderPanelCopy_2').innerHTML = '<div class="t">Scroll Header Panel B</div>';
+  a.Dom('scrollHeaderPanel_2').innerHTML = '<div class="t">ScrollHeaderPanel B</div>';
+  a.Dom('scrollHeaderPanelCopy_2').innerHTML = '<div class="t">ScrollHeaderPanel A</div>';
 
-  a.Behavior.AddScrollHeaderPanelObserver('scrollHeaderPanelCopy_0', 'scrollHeaderPanelCopy_2', 'scrollHeaderPanelCopy_3', 'b', true);
-  a.Behavior.AddScrollHeaderPanelObserver('scrollHeaderPanel_0', 'scrollHeaderPanel_2', 'scrollHeaderPanel_3', 'a', true);
+  a.Behavior.AddScrollHeaderPanelObserver('scrollHeaderPanelCopy_0', 'scrollHeaderPanelCopy_2', 'scrollHeaderPanelCopy_3', 'a', true);
+  a.Behavior.AddScrollHeaderPanelObserver('scrollHeaderPanel_0', 'scrollHeaderPanel_2', 'scrollHeaderPanel_3', 'b', true);
 }, false);
 
 /* Observer切り替え操作 */
@@ -19,10 +19,10 @@ window.addEventListener('apricot-click', function(e) {
   if(a.IsId(id, 'scrollHeaderPanel_1')) {
     a.HideParts('scrollHeaderPanel');
     a.ShowParts('scrollHeaderPanelCopy');
-    a.Behavior.AddScrollHeaderPanelObserver('scrollHeaderPanelCopy_0', 'scrollHeaderPanelCopy_2', 'scrollHeaderPanelCopy_3', 'b', false);
+    a.Behavior.AddScrollHeaderPanelObserver('scrollHeaderPanelCopy_0', 'scrollHeaderPanelCopy_2', 'scrollHeaderPanelCopy_3', 'a', false);
   }else if(a.IsId(id, 'scrollHeaderPanelCopy_1')) {
     a.HideParts('scrollHeaderPanelCopy');
     a.ShowParts('scrollHeaderPanel');
-    a.Behavior.AddScrollHeaderPanelObserver('scrollHeaderPanel_0', 'scrollHeaderPanel_2', 'scrollHeaderPanel_3', 'a', false);
+    a.Behavior.AddScrollHeaderPanelObserver('scrollHeaderPanel_0', 'scrollHeaderPanel_2', 'scrollHeaderPanel_3', 'b', false);
   }
 }, false);
