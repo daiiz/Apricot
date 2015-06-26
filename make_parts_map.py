@@ -3,7 +3,7 @@
 
 # Project Apricot
 # Copyright (c) 2015 daiz.
-# 
+#
 
 import sys
 import os.path
@@ -76,6 +76,9 @@ def generate_parts_map(partsMapObj, divMap):
         # 開始点と同じ列で、yを増やしていくとき、x値が等しい間実行
         # このループを抜けたとき、heightが求まっている
         for y in range(top, len(divMap)):
+            #print (divMap[y], left, var)
+            if divMap[y] == '\n':
+                break
             char = divMap[y][left]
             if char == var:
                 part['height'] += 1
