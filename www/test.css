@@ -1,0 +1,11 @@
+html {
+  overflow-y: auto;
+  background-color: #e9e7e4;
+}
+
+#panel {
+  position: fixed;
+  z-index: 11;
+  background-color: "#e9e7e4";
+}
+
