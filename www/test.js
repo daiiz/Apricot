@@ -1,43 +1,40 @@
 var a = apricot.api;
 
 window.addEventListener('apricot-click', function(e) {
-  //console.log(e.detail);
-  if(a.Dom(e.detail.eventOriginId).elevation > 5) a.Dom(e.detail.eventOriginId).elevation = 0;
-  a.Dom(e.detail.eventOriginId).elevation++;
 
-  //console.log(a.Is(e.detail.brick.id, 'main_1'))
-
+  // ドロワーパネルを開く
   if(a.Is(e.detail.brick.id, 'main_1')[0]) {
     a.Behavior.ToggleDrawerFromLeft('panel', '0.6');
   }
-  console.log(a.Has(e.detail.brick.ids, 'main*'));
 
-  if(a.Has(e.detail.brick.ids, 'main_6')[0]) {    //e.detail.brick.ids[1] == 'main_6'
-    //var card = a.Dom("photoCard").cloneNode(true);    // パーツ向けのAPI必要
-    var card = a.CreatePatternExtends({
+  // カードを追加表示する
+  if(a.Has(e.detail.brick.ids, 'main_6')[0]) {
+    var card = a.NewPatternExtends({
       "design": {
         "position": "relative",
         "top": "",
         "left": "",
-        "height": "364px",
         "marginTop": "10px",
         "marginBottom": "10px"
       }
     }, "photoCard");
-    var newid = card.id;
-    
-    if((a.Dom('main_4').children || []).length <= (a.Dom('main_5').children || []).length) {
-      a.Dom('main_4').appendChild(card);
-      a.Dom('main_3').style.height = a.Dom('main_4').offsetHeight + "px";
-    }else {
-      a.Dom('main_5').appendChild(card);
-      a.Dom('main_3').style.height = a.Dom('main_5').offsetHeight + "px";
-    }
-    a.ApplyAnimation('scaleShow', null, null, newid);
+
+    var stageId = (a.View.Height('main_4') <= a.View.Height('main_5')) ? 'main_4' : 'main_5';
+    a.View.Append(card, stageId);
+    a.View.Height('main_3', a.View.Height(stageId));
+    a.ApplyAnimation('scaleShow', null, null, card.id);
+  }
+
+  // カードの影を変化させる
+  var j = a.Has(e.detail.brick.ids, 'photoCard_+');
+  if(j[0]) {
+    var card = a.Dom(j[1][0]);
+    var sdw = +card.elevation;
+    card.elevation = (sdw > 5) ? 0 : sdw + 1;
   }
 }, false);
 
 
 window.addEventListener('apricot-ready', function(e) {
-  a.Behavior.AddScrollHeaderPanelObserver('main_0', 'main_2', 'main_3', 'b', true);
+  a.Behavior.SetScrollHeaderPanelObserver('main_0', 'main_2', 'main_3', 'b', true);
 }, false);

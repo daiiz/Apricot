@@ -11,6 +11,7 @@ apricot.API.v0 = {"v": "0.0.5 developer preview"};
 apricot.API.v0.Tools = {};
 apricot.API.v0.Designs = {};
 apricot.API.v0.Behavior = {};
+apricot.API.v0.View = {}
 
 /* APIのデフォルトバージョンを指定 */
 apricot.api = apricot.API.v0;
@@ -127,7 +128,37 @@ apricot.api.Designs.Dataset = function(tag, value) {
     tag.dataset[key] = val;
   }
 }
+
 ////////////////////////////////////////////////////////////////////////////////
+// いま表示されている状態に対するアクセス
+
+apricot.api.View.Height = function(id, value) {
+  if(value == null) {
+    return a.Dom(id).scrollHeight;
+  }else {
+    a.Dom(id).style.height = value + "px";
+  }
+  return 0; 
+}
+
+apricot.api.View.Width = function(id, value) {
+  if(value == null) {
+    return a.Dom(id).scrollWidth;
+  }else {
+    a.Dom(id).style.width = value + "px";
+  }
+  return 0; 
+}
+
+apricot.api.View.Append = function(obj, stage_id) {
+  var id = obj.id;
+  a.Dom(stage_id).appendChild(obj);
+  a.Dom(id).style.height = a.Dom(id).scrollHeight + 'px';
+  return id;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 ///
 /* 便利なイディオム */
 apricot.api.Idioms = {
@@ -154,12 +185,6 @@ apricot.api.Has = function(arr, reg_exp_str) {
   }
   return (res.length == 0) ? [false, []] : [true, res];  // [Bool, Arr]
 }
-
-apricot.api.IsId = function(id_with_hyphen, id) {
-  if(id_with_hyphen.split('-')[0] == id) return true;
-  return false;
-}
-
 
 
 /* Apricotオブジェクトにアニメーションキーフレームを適用する */
@@ -212,9 +237,9 @@ apricot.api.MoveBrickTo = function(left, top, id) {
 };
 
 /* 特定のpattern paperを継承してコピーを生成する */
-apricot.api.CreatePatternExtends = function(manifest, extends_pattern_id) {
+apricot.api.NewPatternExtends = function(manifest, extends_pattern_id) {
   if(extends_pattern_id == null) return null;
-  var tag = apricot.api.CreateBrickExtends(manifest, extends_pattern_id);
+  var tag = apricot.api.NewBrickExtends(manifest, extends_pattern_id);
   var ranum = Math.floor(Math.random()*100000000)
   tag.id = extends_pattern_id + '-' + ranum;
   // 継承元の子供をコピーする
@@ -231,7 +256,7 @@ apricot.api.CreatePatternExtends = function(manifest, extends_pattern_id) {
 /* 特定のbrickを継承してコピーを生成する。
  * 何も継承しない場合は新規生成扱いとなる
  */
-apricot.api.CreateBrickExtends = function(manifest, extends_brick_id) {
+apricot.api.NewBrickExtends = function(manifest, extends_brick_id) {
   var tag_name = undefined;
   if(extends_brick_id != null) {
     tag_name = apricot.querySelector('#', extends_brick_id).tagName;
@@ -380,7 +405,7 @@ apricot.C.shp = {
   "stage": "",
   "copiedHeaderImgId": ""
 };
-apricot.api.Behavior.AddScrollHeaderPanelObserver = function(headerId, toolbarId, contentAreaId, type, flag) {
+apricot.api.Behavior.SetScrollHeaderPanelObserver = function(headerId, toolbarId, contentAreaId, type, flag) {
   /* flagがfalseの場合は有効なObserverを変更するだけ */
   /* flag=falseで呼び出すことでObserverを切り替えられる */
   var a = apricot.api;
@@ -767,7 +792,8 @@ apricot.api.Deprecated = [
   {"DuplicateBrick@005": ""},
   {"CopyBrickInParts@005": ""},
   {"FormatDom@005": ""},
-  {"IsId@005": ""}
+  {"IsId@005": ""},
+  {"Behavior/AddScrollHeaderPanelObserver@005": "Behavior/SetScrollHeaderPanelObserver"}
 ];
 ////////////////////////////////////////////////////////////////////////////////
 
