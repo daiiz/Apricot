@@ -6,18 +6,20 @@ apricot.manifest = {
       }
     },
     "brick_0": {
-      //"role": "html-img",
+      "role": "paper-material",
+      "property": {
+        "elevation": 1,
+        "animated": true
+      },
       "design": {
         "zIndex": 8,
-        "Cardboard": "c",
-        "backgroundColor": "#eee",
-        //"Src": "waffle.jpg"
+        "backgroundColor": "#fff"
       }
     },
     "brick_2": {
       "design": {
         "zIndex": 7,
-        "backgroundColor": "#fff"
+        "backgroundColor": "#ccc"
       }
     },
   },

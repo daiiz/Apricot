@@ -138,11 +138,29 @@ apricot.api.Dom = function(id) {
   return apricot.querySelector('#', id);
 }
 
-/* id判定 */
+/* 各種判定 */
+apricot.api.Is = function(str, reg_exp_str) {
+  var reg = new RegExp(reg_exp_str, 'gi');
+  var res = (str.search(reg) != -1) ? true : false;
+  return [res, str];  // [Bool, str]
+}
+
+apricot.api.Has = function(arr, reg_exp_str) {
+  var res = [];
+  for(var i = 0; i < arr.length; i++) {
+    var str = arr[i];
+    var check = apricot.api.Is(str, reg_exp_str);
+    if(check[0] == true) res.push(str);
+  }
+  return (res.length == 0) ? [false, []] : [true, res];  // [Bool, Arr]
+}
+
 apricot.api.IsId = function(id_with_hyphen, id) {
   if(id_with_hyphen.split('-')[0] == id) return true;
   return false;
 }
+
+
 
 /* Apricotオブジェクトにアニメーションキーフレームを適用する */
 apricot.api.ApplyAnimation = function(keyframe_name, animation_settings, transitions_settings, id) {
@@ -192,6 +210,22 @@ apricot.api.MoveBrickTo = function(left, top, id) {
     {"top": apricot.toPx(top)}
   ], id);
 };
+
+/* 特定のpattern paperを継承してコピーを生成する */
+apricot.api.CreatePatternExtends = function(manifest, extends_pattern_id) {
+  if(extends_pattern_id == null) return null;
+  var tag = apricot.api.CreateBrickExtends(manifest, extends_pattern_id);
+  var ranum = Math.floor(Math.random()*100000000)
+  tag.id = extends_pattern_id + '-' + ranum;
+  // 継承元の子供をコピーする
+  var children = apricot.api.Dom(extends_pattern_id).children;
+  for(var i = 0; i < children.length; i++) {
+    var child = children[i].cloneNode(true);
+    child.id = child.id + '-' + ranum;
+    tag.appendChild(child);
+  }
+  return tag;
+}
 
 
 /* 特定のbrickを継承してコピーを生成する。
@@ -296,7 +330,8 @@ apricot.api.Behavior.OpenDrawerFromLeft = function(id, sec) {
   var obj = apricot.querySelector('#', id);
   var t = apricot.toNum(obj.firstChild.style.top);
   var l = apricot.toNum(obj.firstChild.style.left);
-  var w = apricot.toNum(obj.firstChild.style.width) || obj.firstChild.offsetWidth;  // TODO: 子要素のなかで最も大きいwidthを取るようにする
+  // TODO: 子要素のなかで最も大きいwidthを取るようにする
+  var w = apricot.toNum(obj.firstChild.style.width) || obj.firstChild.offsetWidth;  
   // 画面の左端外に追いやる
   var mw = -l-w;
   apricot.api.MovePartsTo(mw, t, id);
@@ -731,7 +766,8 @@ apricot.api.Deprecated = [
   {"OpenDrawerFromLeft@005": apricot.api.Behavior.OpenDrawerFromLeft},
   {"DuplicateBrick@005": ""},
   {"CopyBrickInParts@005": ""},
-  {"FormatDom@005": ""}
+  {"FormatDom@005": ""},
+  {"IsId@005": ""}
 ];
 ////////////////////////////////////////////////////////////////////////////////
 
