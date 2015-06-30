@@ -28,7 +28,7 @@ def createBasicTags(title):
     # 基本CSSスタイル
     sty = '.apricot{} body{}'.format('{position: absolute; outline: none;-webkit-user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0)}', '{margin: 0 0 0 0;}')
     # Apricot Manifest ファイル名
-    apricot_manifest_js = sys.argv[1] + '_manifest.js'
+    apricot_manifest_js = sys.argv[2] + '_manifest.js'
     # ユーザーJSスクリプト・CSSのファイル名
     user_script_finename = sys.argv[2]
 

@@ -162,11 +162,26 @@ apricot.api.View.Append = function(obj, stage_id) {
 ///
 /* 便利なイディオム */
 apricot.api.Idioms = {
+  "manifest": function(){
+    console.log("apricot.manifest = " + JSON.stringify({
+      "pattern": {
+        "brick_0": {
+          "role": "div",
+          "property": {},
+          "design": {}
+        }
+      }
+    }, null, "  ") +";");
+  }
 }
 
 /* ブリックのDOMを返す */
 apricot.api.Dom = function(id) {
   return apricot.querySelector('#', id);
+}
+/* Aom(Apricot Object Model)を返す */
+apricot.api.Aom = function(id) {
+  return 0;
 }
 
 /* 各種判定 */
