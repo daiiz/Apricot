@@ -11,7 +11,8 @@ apricot.API.v0 = {"v": "0.0.5 developer preview"};
 apricot.API.v0.Tools = {};
 apricot.API.v0.Designs = {};
 apricot.API.v0.Behavior = {};
-apricot.API.v0.View = {}
+apricot.API.v0.View = {};
+apricot.API.v0.Old = {};
 
 /* APIのデフォルトバージョンを指定 */
 apricot.api = apricot.API.v0;
@@ -255,7 +256,7 @@ apricot.api.MoveBrickTo = function(left, top, id) {
 apricot.api.NewPatternExtends = function(manifest, extends_pattern_id) {
   if(extends_pattern_id == null) return null;
   var tag = apricot.api.NewBrickExtends(manifest, extends_pattern_id);
-  var ranum = Math.floor(Math.random()*100000000)
+  var ranum = Math.floor(Math.random()*100000000);var ranum = Math.floor(Math.random()*100000000)
   tag.id = extends_pattern_id + '-' + ranum;
   // 継承元の子供をコピーする
   var children = apricot.api.Dom(extends_pattern_id).children;
@@ -271,12 +272,13 @@ apricot.api.NewPatternExtends = function(manifest, extends_pattern_id) {
 /* 特定のbrickを継承してコピーを生成する。
  * 何も継承しない場合は新規生成扱いとなる
  */
+ // 現行仕様では初期詳細スタイルは継承されない（要検討）
 apricot.api.NewBrickExtends = function(manifest, extends_brick_id) {
   var tag_name = undefined;
   if(extends_brick_id != null) {
     tag_name = apricot.querySelector('#', extends_brick_id).tagName;
   }
-  tag_name = tag_name || manifest.role || 'html-div';
+  tag_name = manifest.role || tag_name || 'html-div';
   tag_name = tag_name.replace(/^html\-/g, '');
   // タグを生成する
   var tag = document.createElement(tag_name);
@@ -290,9 +292,15 @@ apricot.api.NewBrickExtends = function(manifest, extends_brick_id) {
   }
   if(extends_brick_id != null) {
     id = extends_brick_id;
+    var ranum = Math.floor(Math.random()*100000000);
+    tag.id = id + '-' + ranum;
     // width, height, backgroundColor を継承する
     tag.style.width = apricot.querySelector('#', id).style.width;
     tag.style.height = apricot.querySelector('#', id).style.height;
+    tag.style.marginLeft = apricot.querySelector('#', id).style.marginLeft;
+    tag.style.marginRight = apricot.querySelector('#', id).style.marginRight;
+    tag.style.marginTop = apricot.querySelector('#', id).style.marginTop;
+    tag.style.marginBottom = apricot.querySelector('#', id).style.marginBottom;
     tag.style.backgroundColor = apricot.querySelector('#', id).style.backgroundColor;
     // top, left を継承する
     tag.style.top = apricot.querySelector('#', id).style.top;
@@ -718,7 +726,7 @@ apricot.traceIds = function(obj) {
   return res;
 }
 
-// shpとの依存関係が解消され次第廃止予定
+// shpとOld.CopyBrickInPartsとの依存関係が解消され次第廃止予定
 apricot.duplicateBrick = function(id, p_id) {
   var target = apricot.querySelector('#', id);
   var new_id = target.id + '-c' + Math.floor(Math.random()*100000);
@@ -798,6 +806,26 @@ apricot.fireInitEvent = function() {
   window.dispatchEvent(ev);
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+/// 旧バージョン移行サポート
+
+/* #idのbrickをparts#parts_id内に非表示状態でコピー生成し、
+ * コピーされたbrickのidを返す。
+ * 要素#idは非表示状態であることを仮定する
+ */
+apricot.api.Old.CopyBrickInParts = function(parts_id, id) {
+  var child_id = apricot.duplicateBrick(id, parts_id);
+  var child = apricot.querySelector('#', child_id);
+  child.id = child_id;
+  child.style.top = "";
+  child.style.left = "";
+  child.style.position = "relative";
+  var t = child.outerHTML;
+  apricot.addClass('element-hidden', child_id);
+  return child_id;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 /// 廃止-代替リスト
 apricot.api.Deprecated = [
@@ -807,7 +835,8 @@ apricot.api.Deprecated = [
   {"DuplicateBrick@005": ""},
   {"CopyBrickInParts@005": ""},
   {"FormatDom@005": ""},
-  {"IsId@005": ""},
+  {"IsId@005": apricot.api.Is},
+  {"DuplicateBrick@005": ""},
   {"Behavior/AddScrollHeaderPanelObserver@005": "Behavior/SetScrollHeaderPanelObserver"}
 ];
 ////////////////////////////////////////////////////////////////////////////////

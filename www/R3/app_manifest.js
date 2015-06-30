@@ -3,7 +3,7 @@ apricot.manifest = {
     "brick_0": {
       "design": {
         "height": "192px",
-        "backgroundImage": "url(breakfast.jpg)",
+        "backgroundImage": "url(R3/breakfast.jpg)",
         "FullWidth": true
       }
     },
@@ -15,7 +15,7 @@ apricot.manifest = {
       "design": {
         "position": "fixed",
         "backgroundColor": "rgba(0,0,0,0)",
-        "backgroundImage": "url(apricot_brown.png)",
+        "backgroundImage": "url(R3/apricot_brown.png)",
         "background-size": "cover",
         "height": "40px",
         "width": "40px",

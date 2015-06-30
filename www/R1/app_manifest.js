@@ -17,7 +17,7 @@ apricot.manifest = {
       "design": {
         "zIndex": 11,
         "cursor": "pointer",
-        "Src": "apricot.png"
+        "Src": "R1/apricot.png"
       }
     },
 
@@ -87,7 +87,7 @@ apricot.manifest = {
     "brick_7": {
       "role": "html-img",
       "property": {
-        "src": "gudebook.jpg"
+        "src": "R1/gudebook.jpg"
       },
       "design": {
         "backgroundColor": "#FFC107",
