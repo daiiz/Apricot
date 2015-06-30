@@ -1,3 +1,0 @@
-sh anzu.sh build myRecipe5 R5/app
-
-sh anzu.sh ca
