@@ -5,3 +5,4 @@ tmp/*.div
 sandbox/
 www/bower_components/
 www/polymer_components/
+ex.txt
