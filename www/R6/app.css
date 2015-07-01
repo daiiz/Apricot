@@ -1,0 +1,8 @@
+.paper-input-char-counter {
+    display: none
+}
+
+html {
+    overflow-y: auto;
+    background-color: #eeeeef;
+}

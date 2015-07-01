@@ -50,6 +50,8 @@ def createBasicTags(title):
       '<link rel="import" href="polymer_components/iron-icons/iron-icons.html">',
       '<link rel="import" href="polymer_components/paper-button/paper-button.html">',
       '<link rel="import" href="polymer_components/paper-icon-button/paper-icon-button.html">',
+      '<link rel="import" href="polymer_components/paper-input/paper-input.html">',
+      '<link rel="import" href="polymer_components/paper-input/paper-textarea.html">',
       # </Polymer Elements>
       '<title>{}</title>'.format(title),
       '<style>{}</style>'.format(sty),

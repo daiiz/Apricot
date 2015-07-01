@@ -100,6 +100,7 @@ apricot.init.buidUI = function(manifest) {
       apricot.querySelector('#', 'apricot_workspace').innerHTML = '';
       apricot.querySelector('#', 'apricot_workspace').appendChild(tag);
       tag = apricot.querySelector('#', 'apricot_workspace').innerHTML;
+      apricot.querySelector('#', 'apricot_workspace').innerHTML = '';
       apricot.querySelector('#', id).outerHTML = tag;
       apricot.querySelector('#', id_init).id = id;
       tag = apricot.querySelector('#', id);
