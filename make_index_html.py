@@ -66,6 +66,7 @@ def createBasicTags(title):
       '<script src="stj/apricot.js"></script>',
       '<script src="stj/apricot_init.js"></script>',
       '<script src="{}.js"></script>'.format(user_script_finename),
+      '<script src="{}_main.js"></script>'.format(user_script_finename),
       '<script src="{}"></script>'.format(apricot_manifest_js),
       '</body>',
       '</html>'
